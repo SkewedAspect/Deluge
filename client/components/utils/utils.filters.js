@@ -38,13 +38,16 @@ module.filter('markdown', function($rootScope, $sce)
         $rootScope.markdownCache = {};
     } // end if
 
-    return function markdown(text)
+    return function markdown(text, skipCache)
     {
-        var hash = simpleHash(text);
-
-        if(hash in $rootScope.markdownCache)
+        if(!skipCache)
         {
-            return $sce.trustAsHtml($rootScope.markdownCache[hash]);
+            var hash = simpleHash(text);
+
+            if(hash in $rootScope.markdownCache)
+            {
+                return $sce.trustAsHtml($rootScope.markdownCache[hash]);
+            } // end if
         } // end if
 
         var mdown = marked(text);
@@ -55,7 +58,10 @@ module.filter('markdown', function($rootScope, $sce)
             mdown = match.split(/\r?\n/).join("<br>") + mdown;
         });
 
-        $rootScope.markdownCache[hash] = mdown;
+        if(!skipCache)
+        {
+            $rootScope.markdownCache[hash] = mdown;
+        } // end if
 
         return $sce.trustAsHtml(mdown);
     }; // end markdown
