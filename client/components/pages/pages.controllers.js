@@ -39,7 +39,13 @@ module.controller('PagesController', function($scope, $routeParams)
         },
         'some-random-slug': {
             title: "Some Random Slug",
-            content: "The good news is, this is not as random as you might believe!"
+            content: "The good news is, this is not as random as you might believe!" +
+                "\n\n" +
+                "```javascript\n" +
+                "{\n" +
+                "    foo: \"bar\"\n" +
+                "}\n" +
+                "```"
         }
     };
 

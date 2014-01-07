@@ -18,5 +18,17 @@ window.app = angular.module("deluge", [
             .when('/admin', { templateUrl: '/components/admin/partials/dashboard.html',  controller: 'AdminController'})
             .when('/:slug*?', { templateUrl: '/components/pages/partials/pages.html',   controller: 'PagesController'})
             .otherwise({redirectTo: '/'});
+
+        // Configure marked parser
+        marked.setOptions({
+            gfm: true,
+            tables: true,
+            breaks: false,
+            pedantic: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false
+        });
+
     }]);
 //----------------------------------------------------------------------------------------------------------------------
