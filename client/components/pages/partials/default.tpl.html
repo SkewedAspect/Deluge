@@ -1,9 +1,9 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="row">
-        <div class="col-xs-12 navbar-brand text-center" style="padding: 0 20px; line-height: 47px">
-            <img  ng-if="page.slug == '/'" src="/client/static/droplet.png" width="32" class="pull-left" style="margin-top: 7px">
-            {{ page.title }}
-            <a href="/" class="btn btn-primary navbar-btn pull-left" ng-if="page.slug != '/'"><i class="fa fa-fw fa-home fa-lg"></i></a>
+        <div class="col-xs-12 text-center">
+            <a ng-if="page.slug == '/'" href="#" class="navbar-brand"><img src="/client/static/droplet.png" width="20"> Deluge</a>
+            <a ng-if="page.slug != '/'" href="/" class="btn btn-primary navbar-btn pull-left" style="margin-left: 10px;"><i class="fa fa-fw fa-home fa-lg"></i></a>
+            <h3 class="navbar-text" style="float:none">{{ page.title }}</h3>
         </div>
     </div>
 </nav>
