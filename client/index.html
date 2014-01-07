@@ -16,7 +16,11 @@
         <!-- Theme Styling -->
         <link href="/client/css/theme.css" rel="stylesheet">
 
+        <!-- Vendor Styling -->
+        <link href="/client/css/font-awesome.min.css" rel="stylesheet">
+
         <!-- Vendor Scripts -->
+        <script src="/client/js/marked.js"></script>
         <script src="/client/js/angular.min.js"></script>
         <script src="/client/js/angular-route.min.js"></script>
         <script src="/client/js/angular-resource.min.js"></script>
@@ -32,15 +36,7 @@
         <script src="//localhost:35729/livereload.js"></script>
         <% } %>
     </head>
-    <body class="container">
-    <br/>
-        <div class="jumbotron">
-            <h1><img src="/client/static/droplet.png" width="70"> Welcome to Deluge.</h1>
-            <p>This is the default landing page, letting you know everything's working.</p>
-            <p>
-                <a class="btn btn-primary btn-lg" role="button">Add your first page</a>
-                <a class="btn btn-default btn-lg" role="button">Admin Section</a>
-            </p>
-        </div>
+    <body>
+        <div id="main-view" ng-view></div>
     </body>
 </html>

@@ -47,7 +47,7 @@ app.router.add(
     */
     {
         //url: /^\/(?!admin\/|client\/)/,
-        url: '/',
+        url: '*',
         get: function(req, resp)
         {
             fs.createReadStream('./built/index.html').pipe(resp);

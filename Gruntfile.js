@@ -19,10 +19,10 @@ module.exports = function(grunt)
 			css: "built/css",
 			less: "client/less",
 			components: {
-				less: "components/**/less",
-                js: "components/**/js",
-                controllers: "components/**/*controller*.js",
-                filters: "components/**/*filter*.js"
+				less: "client/components/**/less",
+                js: "client/components/**/js",
+                controllers: "client/components/**/*controller*.js",
+                filters: "client/components/**/*filter*.js"
 			}
 		},
         copy: {
@@ -31,7 +31,12 @@ module.exports = function(grunt)
                     { expand: true, flatten: true, src: ['client/app.js'], dest: '<%= project.dest %>/js', filter: 'isFile' },
                     { expand: true, flatten: true, src: ['<%=project.static%>/**'], dest: '<%= project.dest %>/static', filter: 'isFile' },
                     { expand: true, flatten: true, src: ['<%=project.vendor%>/**/*.js', '!<%=project.vendor%>/bootstrap/**/*.js'], dest: '<%= project.dest %>/js', filter: 'isFile' }
-
+                ]
+            },
+            vendor: {
+                files: [
+                    { expand: true, flatten: true, src: ['<%=project.vendor%>/**/*.css', '!<%=project.vendor%>/bootstrap/**/*.css'], dest: '<%= project.dest %>/css', filter: 'isFile' },
+                    { expand: true, flatten: true, src: ['<%=project.vendor%>/**/fonts/*'], dest: '<%= project.dest %>/fonts', filter: 'isFile' }
                 ]
             },
             index: {
@@ -89,6 +94,10 @@ module.exports = function(grunt)
                 url: 'https://github.com/twbs/bootstrap/archive/v3.0.3.zip',
                 renameZipRoot: true
             },
+            fontawesome: {
+                url: 'http://fontawesome.io/assets/font-awesome-4.0.3.zip',
+                renameZipRoot: true
+            },
             angularjs: {
                 basepath: 'http://code.angularjs.org/1.2.7/',
                 src: ['angular.min.js','angular.js', 'angular-route.min.js', 'angular-route.js', 'angular-resource.js', 'angular-resource.min.js', 'angular-mocks.js','angular-cookies.js','angular-cookies.min.js','angular-touch.js','angular-touch.min.js', 'angular-animate.js', 'angular-animate.min.js']
@@ -96,6 +105,10 @@ module.exports = function(grunt)
             'ui-bootstrap': {
                 basepath: 'https://raw.github.com/angular-ui/bootstrap/gh-pages/',
                 src: ['ui-bootstrap-tpls-0.9.0.js', 'ui-bootstrap-tpls-0.9.0.min.js']
+            },
+            marked: {
+                basepath: 'https://raw.github.com/chjj/marked/master/lib/',
+                src: ['marked.js']
             },
             spacelab: {
                 basepath: 'http://bootswatch.com/spacelab/',

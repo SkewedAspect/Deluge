@@ -1,0 +1,11 @@
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="row">
+        <div class="col-xs-12 navbar-brand text-center" style="padding: 0 20px; line-height: 47px">
+            <img  ng-if="page.slug == '/'" src="/client/static/droplet.png" width="32" class="pull-left" style="margin-top: 7px">
+            {{ page.title }}
+            <a href="/" class="btn btn-primary navbar-btn pull-left" ng-if="page.slug != '/'"><i class="fa fa-fw fa-home fa-lg"></i></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container" ng-bind-html="page.content | markdown"></div>
