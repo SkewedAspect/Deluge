@@ -3,6 +3,11 @@
         <div class="col-xs-12 text-center">
             <a ng-if="page.slug == '/'" href="#" class="navbar-brand"><img src="/client/static/droplet.png" width="20"> Deluge</a>
             <a ng-if="page.slug != '/'" href="/" class="btn btn-primary navbar-btn pull-left" style="margin-left: 10px;"><i class="fa fa-fw fa-home fa-lg"></i></a>
+            <div class="pull-right" style="margin-right: 10px;">
+                <p class="navbar-text">chris.case@g33xnexus.com</p>
+                <button class="btn btn-default navbar-btn" title="Admin Section"><i class="fa fa-fw fa-lg fa-gears"></i></button>
+            </div>
+
             <h3 class="navbar-text" style="float:none">{{ page.title }}</h3>
         </div>
     </div>
