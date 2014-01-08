@@ -1,15 +1,27 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="row">
-        <div class="col-xs-12 text-center">
-            <a ng-if="page.slug == '/'" href="#" class="navbar-brand"><img src="/client/static/droplet.png" width="20"> Deluge</a>
-            <a ng-if="page.slug != '/'" href="/" class="btn btn-primary navbar-btn pull-left" style="margin-left: 10px;"><i class="fa fa-fw fa-home fa-lg"></i></a>
-            <div class="pull-right" style="margin-right: 10px;">
-                <p class="navbar-text">chris.case@g33xnexus.com</p>
-                <button class="btn btn-default navbar-btn" title="Admin Section"><i class="fa fa-fw fa-lg fa-gears"></i></button>
-            </div>
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" ng-click="userCollapsed = !userCollapsed" ng-init="userCollapsed = true" data-target="#user-menu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"><img src="/client/static/droplet.png" width="20"> Deluge</a>
+    </div>
 
-            <h3 class="navbar-text" style="float:none">{{ page.title }}</h3>
-        </div>
+    <h3 class="navbar-center">{{ page.title }}</h3>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" collapse="userCollapsed">
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
+            <li>
+                <p class="navbar-text">chris.case@g33xnexus.com</p>
+            </li>
+            <li>
+                <button class="btn btn-default navbar-btn" title="Admin Section"><i class="fa fa-fw fa-lg fa-gears"></i></button>
+            </li>
+        </ul>
     </div>
 </nav>
 

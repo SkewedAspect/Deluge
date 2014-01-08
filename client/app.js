@@ -7,6 +7,7 @@
 window.app = angular.module("deluge", [
         'ngRoute',
         'ngResource',
+        'ui.bootstrap',
         'client.templates',
         'components.filters',
         'components.controllers'

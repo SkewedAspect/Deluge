@@ -19,8 +19,8 @@ module.exports = function(grunt)
 			css: "built/css",
 			less: "client/less",
 			components: {
-				less: "client/components/**/less",
-                js: "client/components/**/js",
+				less: "client/components/**/*.less",
+                js: "client/components/**/*.js",
                 controllers: "client/components/**/*controller*.js",
                 filters: "client/components/**/*filter*.js"
 			}
@@ -67,7 +67,7 @@ module.exports = function(grunt)
                     paths: ['<%=project.vendor%>']
                 },
                 files: {
-                    '<%= project.css %>/theme.css': ['<%= project.less %>/**/*.less']
+                    '<%= project.css %>/theme.css': ['<%= project.less %>/**/*.less', '<%= project.components.less %>']
                 }
             },
             min: {
@@ -76,7 +76,7 @@ module.exports = function(grunt)
                     compress: true
                 },
                 files: {
-                    '<%= project.css %>/theme.min.css': ['<%= project.less %>/**/*.less']
+                    '<%= project.css %>/theme.min.css': ['<%= project.less %>/**/*.less', '<%= project.components.less %>']
                 }
             }
         },
@@ -156,7 +156,7 @@ module.exports = function(grunt)
                 }
             },
             less: {
-                files: ['<%= project.less %>/*.less', 'client/component/**/*.less'],
+                files: ['<%= project.less %>/*.less', '<%= project.components.less %>'],
                 tasks: ['less'],
                 options: {
                     livereload: true,
