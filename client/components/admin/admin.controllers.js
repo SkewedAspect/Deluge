@@ -50,8 +50,9 @@ module.controller('AdminController', function($scope, $routeParams, $location)
         case 'page':
             $scope.page_title = "Edit '" + $scope.slug + "' Page";
             $scope.admin_tpl = '/components/admin/partials/edit_page.html';
+            var includeDrafts = true;
 
-            $scope.socket.emit('get page', $scope.slug, function(error, page)
+            $scope.socket.emit('get page', $scope.slug, includeDrafts, function(error, page)
             {
                 if(error)
                 {
@@ -60,32 +61,42 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
                 $scope.$apply(function()
                 {
-                    console.log('setting page', page);
                     $scope.editPage = page;
                 });
             });
 
-            $scope.publish = function(newPage)
+            $scope.unpublish = function(editPage)
             {
-                // Publishing means it's no longer a draft
-                newPage.draft = false;
+                editPage.draft = true;
 
-                $scope.save(newPage);
+                $scope.save(editPage, 'continue');
             }; // end $scope.publish
 
-            $scope.save = function(newPage)
+            $scope.publish = function(editPage)
             {
-                $scope.socket.emit('update page', newPage, function(error)
+                // Publishing means it's no longer a draft
+                editPage.draft = false;
+
+                $scope.save(editPage, 'continue');
+            }; // end $scope.publish
+
+            $scope.save = function(editPage, stay)
+            {
+                $scope.socket.emit('update page', editPage, function(error)
                 {
                     if(error)
                     {
                         console.error('Error while adding a page.', error);
                     } // end if
 
-                    $scope.$apply(function()
+                    if(!stay)
                     {
-                        $location.path('/admin');
-                    });
+                        $scope.$apply(function()
+                        {
+                            $scope.editPage = editPage;
+                            $location.path('/admin');
+                        });
+                    } // end if
                 });
             }; // end $scope.publish
 
@@ -121,7 +132,8 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
     if(!$scope.admin_tpl)
     {
-        $scope.socket.emit('list pages', function(error, pages)
+        var includeDrafts = true;
+        $scope.socket.emit('list pages', includeDrafts, function(error, pages)
         {
             $scope.$apply(function()
             {

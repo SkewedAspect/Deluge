@@ -1,3 +1,7 @@
+<div  ng-if="editPage.draft" class="alert alert-warning">
+    <button type="submit" class="btn btn-primary btn-sm pull-right" ng-click="publish(editPage)">Publish</button>
+    <strong>Draft:</strong> This page will not be publically viewable until you publish it.
+</div>
 <form role="form">
     <div class="form-group">
         <label for="editPageTitle">Title</label>
@@ -5,7 +9,7 @@
     </div>
     <div class="form-group">
         <label for="editPageSlug">Slug</label>
-        <input type="text" class="form-control" id="editPageSlug" ng-model="editPage.slug">
+        <input type="text" class="form-control" id="editPageSlug" ng-model="editPage.slug" disabled>
         <!--slug from="editPage.title" to="editPage.slug"></slug-->
     </div>
     <div class="form-group">
@@ -19,8 +23,14 @@
         </select>
     </div>
     <hr>
+    <div class="pull-left">
+        <button type="submit" class="btn btn-default" ng-click="setLocation(editPage.slug)">View</button>
+        <button ng-if="editPage.draft == false" type="submit" class="btn btn-warning" ng-click="unpublish(editPage)"><i class="fa fa-fw fa-download"></i> Unpublish</button>
+        <button type="submit" class="btn btn-danger" ng-click="remove(editPage.slug)">Delete</button>
+    </div>
     <div class="pull-right">
         <button type="submit" class="btn btn-default" ng-click="save(editPage)">Save</button>
-        <button type="submit" class="btn btn-primary" ng-click="publish(editPage)">Publish</button>
+        <button type="submit" class="btn btn-default" ng-click="save(editPage, 'continue')">Save and Continue</button>
+        <button ng-if="editPage.draft" type="submit" class="btn btn-primary" ng-click="publish(editPage)"><i class="fa fa-fw fa-upload"></i> Publish</button>
     </div>
 </form>

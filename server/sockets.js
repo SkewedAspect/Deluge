@@ -25,9 +25,16 @@ app.sockets.on('connection', function(socket)
     // Pages
     //------------------------------------------------------------------------------------------------------------------
 
-    socket.on('list pages', function(cb)
+    socket.on('list pages', function(includeDrafts, cb)
     {
-        models.Page.find({ draft: false }, function(error, pages)
+        filter = { draft: false };
+
+        if(includeDrafts)
+        {
+            var filter = {};
+        } // end if
+
+        models.Page.find(filter, function(error, pages)
         {
             if(error)
             {
@@ -69,9 +76,22 @@ app.sockets.on('connection', function(socket)
         });
     });
 
-    socket.on('get page', function(slug, cb)
+    socket.on('get page', function(slug, includeDrafts, cb)
     {
-        models.Page.findOne({ slug: slug }, function(error, page)
+        var filter = { slug: slug, draft: false };
+
+        if(arguments.length == 2)
+        {
+            cb = includeDrafts;
+            includeDrafts = false;
+        } // end if
+
+        if(includeDrafts)
+        {
+            filter = { slug: slug };
+        } // end if
+
+        models.Page.findOne(filter, function(error, page)
         {
             if(error)
             {
