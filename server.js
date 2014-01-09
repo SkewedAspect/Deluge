@@ -11,6 +11,7 @@ var app = require('omega-wf').app;
 
 var package = require('./package');
 var config = require('./config');
+var sockets = require('./server/sockets');
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -46,7 +47,6 @@ app.router.add(
     },
     */
     {
-        //url: /^\/(?!admin\/|client\/)/,
         url: '*',
         get: function(req, resp)
         {

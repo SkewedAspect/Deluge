@@ -40,30 +40,33 @@ module.filter('markdown', function($rootScope, $sce)
 
     return function markdown(text, skipCache)
     {
-        if(!skipCache)
+        if(text)
         {
-            var hash = simpleHash(text);
-
-            if(hash in $rootScope.markdownCache)
+            if(!skipCache)
             {
-                return $sce.trustAsHtml($rootScope.markdownCache[hash]);
+                var hash = simpleHash(text);
+
+                if(hash in $rootScope.markdownCache)
+                {
+                    return $sce.trustAsHtml($rootScope.markdownCache[hash]);
+                } // end if
             } // end if
+
+            var mdown = marked(text);
+
+            // Support leading newlines.
+            text.replace(/^(\r?\n)+/, function(match)
+            {
+                mdown = match.split(/\r?\n/).join("<br>") + mdown;
+            });
+
+            if(!skipCache)
+            {
+                $rootScope.markdownCache[hash] = mdown;
+            } // end if
+
+            return $sce.trustAsHtml(mdown);
         } // end if
-
-        var mdown = marked(text);
-
-        // Support leading newlines.
-        text.replace(/^(\r?\n)+/, function(match)
-        {
-            mdown = match.split(/\r?\n/).join("<br>") + mdown;
-        });
-
-        if(!skipCache)
-        {
-            $rootScope.markdownCache[hash] = mdown;
-        } // end if
-
-        return $sce.trustAsHtml(mdown);
     }; // end markdown
 });
 

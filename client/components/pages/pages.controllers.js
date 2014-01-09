@@ -11,11 +11,16 @@ function buildTemplateURL(templateName)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-module.controller('PagesController', function($scope, $routeParams)
+module.controller('PagesController', function($scope, $routeParams, $location)
 {
-    var default_page = {
+    var not_found = {
         title: "Page not found",
         template: buildTemplateURL('notfound')
+    };
+
+    var error_page = {
+        title: "Page not found",
+        template: buildTemplateURL('error')
     };
 
     var fallback_page = {
@@ -23,6 +28,7 @@ module.controller('PagesController', function($scope, $routeParams)
         template: buildTemplateURL('fallback')
     };
 
+    /*
     $scope.pages = {
         '/': {
             title: "Home",
@@ -47,19 +53,49 @@ module.controller('PagesController', function($scope, $routeParams)
                 "}\n" +
                 "```"
         }
-    };
+    };*/
 
     // Detect a lack of pages, and display a friendly page.
-    if(!$scope.pages || Object.keys($scope.pages).length == 0)
-    {
-        $scope.page = fallback_page;
-    }
-    else
+    $scope.socket.emit('has pages', function(error, hasPages)
     {
         var slug = $routeParams.slug || '/';
-        $scope.page = $scope.pages[slug] || default_page;
-        $scope.page.slug = slug;
-    } // end if
+
+        if(!hasPages)
+        {
+            $scope.$apply(function()
+            {
+                if(slug != '/')
+                {
+                    $location.path('/');
+                }
+                else
+                {
+                    $scope.page = fallback_page;
+                } // end if
+            });
+        }
+        else
+        {
+            // Attempt to get the page for the current slug.
+            $scope.socket.emit('get page', slug, function(error, page)
+            {
+                $scope.$apply(function()
+                {
+                    if(error)
+                    {
+                        console.log('Error getting page.', error);
+                        $scope.page = error_page;
+                        $scope.page.slug = slug;
+                        $scope.page.error = error;
+                    }
+                    else
+                    {
+                        $scope.page = page || not_found;
+                    } // end if
+                });
+            });
+        } // end if
+    });
 });
 
 // ---------------------------------------------------------------------------------------------------------------------

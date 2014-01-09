@@ -16,7 +16,7 @@ window.app = angular.module("deluge", [
     {
         $locationProvider.html5Mode(true);
         $routeProvider
-            .when('/admin', { templateUrl: '/components/admin/partials/dashboard.html',  controller: 'AdminController'})
+            .when('/admin/:section?/:slug*?', { templateUrl: '/components/admin/partials/dashboard.html',  controller: 'AdminController'})
             .when('/:slug*?', { templateUrl: '/components/pages/partials/pages.html',   controller: 'PagesController'})
             .otherwise({redirectTo: '/'});
 
@@ -31,5 +31,21 @@ window.app = angular.module("deluge", [
             smartypants: false
         });
 
+    }])
+    .run(['$rootScope', '$location', function($rootScope, $location)
+    {
+        //--------------------------------------------------------------------------------------------------------------
+        // Useful functions
+        //--------------------------------------------------------------------------------------------------------------
+
+        $rootScope.setLocation = function(path)
+        {
+            $location.path(path);
+        }; // end setLocation
+
+        //--------------------------------------------------------------------------------------------------------------
+
+        // Connect to socket.io
+        $rootScope.socket = io.connect();
     }]);
 //----------------------------------------------------------------------------------------------------------------------
