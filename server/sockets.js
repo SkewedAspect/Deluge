@@ -27,7 +27,7 @@ app.sockets.on('connection', function(socket)
 
     socket.on('list pages', function(cb)
     {
-        models.Page.find(function(error, pages)
+        models.Page.find({ draft: false }, function(error, pages)
         {
             if(error)
             {
@@ -40,7 +40,7 @@ app.sockets.on('connection', function(socket)
 
     socket.on('has pages', function(cb)
     {
-        models.Page.find(function(error, pages)
+        models.Page.find({ draft: false }, function(error, pages)
         {
             if(error)
             {
@@ -54,6 +54,7 @@ app.sockets.on('connection', function(socket)
 
     socket.on('add page', function(page, cb)
     {
+
         var model = new models.Page(page);
         model.save(function(error)
         {
@@ -61,6 +62,8 @@ app.sockets.on('connection', function(socket)
             {
                 logger.error('Error saving page: %s\n  %s', error.message || error.toString(), error.stack || "");
             } // end if
+
+            console.log('added page!');
 
             cb(error, page);
         });

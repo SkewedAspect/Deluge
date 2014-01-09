@@ -27,7 +27,7 @@ module.exports = ns.define({
 
     Page: {
         title: fields.String(),
-        slug: fields.String(),
+        slug: fields.String({ key: true }),
         content: fields.String(),
         template: fields.String(),
         draft: fields.Boolean({ default: true }),
@@ -56,7 +56,7 @@ module.exports = ns.define({
     Article: {
         title: fields.String(),
         tagline: fields.String(),
-        slug: fields.String(),
+        slug: fields.String({ key: true }),
         content: fields.String(),
         template: fields.String(),
         tags: fields.List({ type: fields.String() }),

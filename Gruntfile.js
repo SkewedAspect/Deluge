@@ -106,6 +106,14 @@ module.exports = function(grunt)
                 basepath: 'https://raw.github.com/angular-ui/bootstrap/gh-pages/',
                 src: ['ui-bootstrap-tpls-0.9.0.js', 'ui-bootstrap-tpls-0.9.0.min.js']
             },
+            'lodash': {
+                basepath: 'https://raw.github.com/lodash/lodash/2.4.1/dist/',
+                src: ['lodash.min.js']
+            },
+            'angular-slugify': {
+                basepath: 'https://raw.github.com/paulsmith/angular-slugify/master/',
+                src: ['angular-slugify.js']
+            },
             marked: {
                 basepath: 'https://raw.github.com/chjj/marked/master/lib/',
                 src: ['marked.js']

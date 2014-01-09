@@ -1,0 +1,26 @@
+<form role="form">
+    <div class="form-group">
+        <label for="editPageTitle">Title</label>
+        <input ng-model="editPage.title" type="text" class="form-control" id="editPageTitle" placeholder="Enter Page Title">
+    </div>
+    <div class="form-group">
+        <label for="editPageSlug">Slug</label>
+        <input type="text" class="form-control" id="editPageSlug" ng-model="editPage.slug">
+        <!--slug from="editPage.title" to="editPage.slug"></slug-->
+    </div>
+    <div class="form-group">
+        <label for="editPageContent">Content</label>
+        <textarea ng-model="editPage.content" class="form-control" id="editPageContent" rows="10"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="editPageTemplate">Template</label>
+        <select ng-model="editPage.template" id="editPageTemplate" class="form-control">
+            <option value="">default.html</option>
+        </select>
+    </div>
+    <hr>
+    <div class="pull-right">
+        <button type="submit" class="btn btn-default" ng-click="save(editPage)">Save</button>
+        <button type="submit" class="btn btn-primary" ng-click="publish(editPage)">Publish</button>
+    </div>
+</form>
