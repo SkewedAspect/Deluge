@@ -70,8 +70,6 @@ app.sockets.on('connection', function(socket)
                 logger.error('Error saving page: %s\n  %s', error.message || error.toString(), error.stack || "");
             } // end if
 
-            console.log('added page!');
-
             cb(error, page);
         });
     });
