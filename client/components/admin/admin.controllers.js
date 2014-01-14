@@ -1,6 +1,7 @@
 module.controller('AdminController', function($scope, $routeParams, $location)
 {
     $scope.slug = $routeParams.slug || '/';
+    $scope.page = {};
 
     //------------------------------------------------------------------------------------------------------------------
     // Route admin section
@@ -48,6 +49,7 @@ module.controller('AdminController', function($scope, $routeParams, $location)
         //--------------------------------------------------------------------------------------------------------------
 
         case 'page':
+            $scope.preview = true;
             $scope.page_title = "Edit '" + $scope.slug + "' Page";
             $scope.admin_tpl = '/components/admin/partials/edit_page.html';
             var includeDrafts = true;
@@ -61,7 +63,7 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
                 $scope.$apply(function()
                 {
-                    $scope.editPage = page;
+                    $scope.page = page;
                 });
             });
 
@@ -93,7 +95,7 @@ module.controller('AdminController', function($scope, $routeParams, $location)
                     {
                         $scope.$apply(function()
                         {
-                            $scope.editPage = editPage;
+                            $scope.page = editPage;
                             $location.path('/admin');
                         });
                     } // end if
@@ -124,6 +126,7 @@ module.controller('AdminController', function($scope, $routeParams, $location)
             $scope.$apply(function()
             {
                 _.remove($scope.pages, { slug: slug });
+                $location.path('/admin');
             });
         });
     };

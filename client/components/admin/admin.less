@@ -6,6 +6,53 @@
     .panel .panel-heading .btn + .panel-title {
         padding-top: 7px;
     }
+
+    .preview-include {
+        .container {
+            width: 100% !important;
+        }
+
+    }
+
+    .container.container-preview {
+        @media(min-width: 818px)
+        {
+            min-width: 750px;
+            width: 100%;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        @media(min-width: 992px)
+        {
+            width: 970px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        @media(min-width: 1092px)
+        {
+            min-width: 970px;
+            width: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+
+        @media(min-width: 1200px)
+        {
+            width: 1170px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        @media(min-width: 1370px)
+        {
+            min-width: 1170px;
+            width: 100%;
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+    }
 }
 
 .table-admin {
@@ -19,6 +66,21 @@
         &.expand {
             width: 99%
         }
+    }
+}
+
+.preview-form {
+    @media(min-width: 992px)
+    {
+        border-right: 1px solid #eee;
+    }
+}
+
+.tiny-hidden {
+    display: inline-block !important;
+
+    @media (max-width: 420px) {
+        display: none !important;
     }
 }
 
