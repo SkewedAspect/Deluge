@@ -9,6 +9,7 @@ window.app = angular.module("deluge", [
         'ngResource',
         'slugifier',
         'ui.bootstrap',
+        'ui.codemirror',
         'client.templates',
         'components.filters',
         'components.controllers'
@@ -30,7 +31,10 @@ window.app = angular.module("deluge", [
             pedantic: false,
             sanitize: false,
             smartLists: true,
-            smartypants: false
+            smartypants: false,
+            highlight: function (code) {
+                return hljs.highlightAuto(code).value;
+            }
         });
 
     }])

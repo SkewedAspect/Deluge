@@ -98,6 +98,33 @@ module.exports = function(grunt)
                 url: 'http://fontawesome.io/assets/font-awesome-4.0.3.zip',
                 renameZipRoot: true
             },
+            'ui-codemirror': {
+                url: 'https://github.com/angular-ui/ui-codemirror/archive/v0.1.0.zip',
+                renameZipRoot: true
+            },
+            'codemirror': {
+                basepath: 'https://raw.github.com/marijnh/CodeMirror/v3.12/',
+                src: ['lib/codemirror.js', 'lib/codemirror.css', 'addon/mode/overlay.js',
+                    'mode/markdown/markdown.js',
+                    'mode/gfm/gfm.js',
+
+                    // Languages to support highlighting in code blocks, in the editor
+                    'mode/css/css.js',
+                    'mode/diff/diff.js',
+                    'mode/erlang/erlang.js',
+                    'mode/go/go.js',
+                    'mode/htmlembedded/htmlembedded.js',
+                    'mode/javascript/javascript.js',
+                    'mode/less/less.js',
+                    'mode/python/python.js',
+                    'mode/shell/shell.js',
+                    'mode/yaml/yaml.js'
+                ]
+            },
+            highlightjs: {
+                basepath: 'http://yandex.st/highlightjs/8.0/',
+                src: ['highlight.min.js', 'styles/github.min.css']
+            },
             angularjs: {
                 basepath: 'http://code.angularjs.org/1.2.7/',
                 src: ['angular.min.js','angular.js', 'angular-route.min.js', 'angular-route.js', 'angular-resource.js', 'angular-resource.min.js', 'angular-mocks.js','angular-cookies.js','angular-cookies.min.js','angular-touch.js','angular-touch.min.js', 'angular-animate.js', 'angular-animate.min.js']

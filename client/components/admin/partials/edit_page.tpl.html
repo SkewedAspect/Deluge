@@ -48,7 +48,13 @@
             </div>
             <div class="form-group">
                 <label for="pageContent">Content</label>
-                <textarea ng-model="page.content" class="form-control" id="pageContent" rows="10"></textarea>
+                <!--textarea ng-model="page.content" class="form-control" id="pageContent" rows="10"  ui-codemirror="{
+                    lineNumbers: true,
+                    readOnly: 'nocursor',
+                    lineWrapping : true,
+                    mode: 'markdown'
+                    }"></textarea-->
+                <textarea ng-class="'form-control'" ng-model="page.content" ui-codemirror="{ lineWrapping : true, mode: 'gfm' }"></textarea>
             </div>
 
             <hr>
