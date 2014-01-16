@@ -10,20 +10,23 @@ module.controller('AdminController', function($scope, $routeParams, $location)
     switch($routeParams.section)
     {
         case 'add_page':
+            $scope.preview = true;
             $scope.page_title = "Add New Page";
             $scope.admin_tpl = '/components/admin/partials/add_page.html';
 
-            $scope.publish = function(newPage)
+            $scope.publish = function(page)
             {
                 // Publishing means it's no longer a draft
-                newPage.draft = false;
+                page.draft = false;
 
-                $scope.save(newPage);
+                $scope.save(page);
             }; // end $scope.publish
 
-            $scope.save = function(newPage)
+            $scope.save = function(page)
             {
-                $scope.socket.emit('add page', newPage, function(error)
+                console.log(page, $scope.page);
+
+                $scope.socket.emit('add page', page, function(error)
                 {
                     if(error)
                     {

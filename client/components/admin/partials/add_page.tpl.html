@@ -1,32 +1,59 @@
-<div class="container">
-    <form role="form">
-        <div class="form-group">
-            <div class="row">
-                <div class="col-sm-8">
-                    <label for="newPageTitle">Title</label>
-                    <input ng-model="newPage.title" type="text" class="form-control" id="newPageTitle" placeholder="Enter Page Title">
-                </div>
-                <div class="col-sm-4">
-                    <label for="newPageSlug">Slug</label>
-                    <input type="text" class="form-control" id="newPageSlug" ng-model="newPage.slug">
-                    <slug from="newPage.title" to="newPage.slug"></slug>
+<div class="container container-preview">
+    <div class="row">
+        <div class="col-md-6 preview-include visible-sm">
+            <hr class="hidden-md hidden-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-fw fa-desktop"></i> Page Preview</h3>
                 </div>
             </div>
+            <div ng-include="page.template || '/components/pages/partials/default.html'"></div>
+            <hr class="hidden-md hidden-lg">
         </div>
-        <div class="form-group">
-            <label for="pageContent">Content</label>
-            <textarea ng-model="newPage.content" class="form-control" id="pageContent" rows="10"></textarea>
+        <form role="form" class="col-md-6 preview-form">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <label for="pageTitle">Title</label>
+                        <input ng-model="page.title" type="text" class="form-control" id="pageTitle" placeholder="Enter Page Title">
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="pageSlug">Slug</label>
+                        <input type="text" class="form-control" id="pageSlug" ng-model="page.slug">
+                        <slug from="page.title" to="page.slug"></slug>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pageTemplate">Template</label>
+                <select ng-model="page.template" id="pageTemplate" class="form-control">
+                    <option value="">default.html</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pageContent">Content</label>
+                <div id="pageContent" ng-class="'form-control'" ng-model="page.content" ui-codemirror="{ lineWrapping : true, mode: 'gfm' }"></div>
+            </div>
+
+            <hr>
+            <div class="pull-right hidden-xs">
+                <button type="submit" class="btn btn-default" ng-click="save(page)"><i class="fa fa-fw fa-save"></i> Save as Draft</button>
+                <button type="submit" class="btn btn-primary" ng-click="publish(page)"><i class="fa fa-fw fa-upload"></i> Publish</button>
+            </div>
+            <div class="btn-group btn-group-justified visible-xs">
+                <a type="submit" class="btn btn-default" ng-click="save(page)"><i class="fa fa-fw fa-save"></i> Save as Draft</a>
+                <a type="submit" class="btn btn-primary" ng-click="publish(page)"><i class="fa fa-fw fa-upload"></i> Publish</a>
+            </div>
+        </form>
+        <div class="col-md-6 preview-include hidden-sm hidden-xs">
+            <hr class="hidden-md hidden-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-fw fa-desktop"></i> Page Preview</h3>
+                </div>
+            </div>
+            <div ng-include="page.template || '/components/pages/partials/default.html'"></div>
+            <hr class="hidden-md hidden-lg">
         </div>
-        <div class="form-group">
-            <label for="pageTemplate">Template</label>
-            <select ng-model="newPage.template" id="pageTemplate" class="form-control">
-                <option value="">default.html</option>
-            </select>
-        </div>
-        <hr>
-        <div class="pull-right">
-            <button type="submit" class="btn btn-default" ng-click="save(newPage)"><i class="fa fa-fw fa-save"></i> Save as Draft</button>
-            <button type="submit" class="btn btn-primary" ng-click="publish(newPage)"><i class="fa fa-fw fa-upload"></i> Publish</button>
-        </div>
-    </form>
+    </div>
 </div>
