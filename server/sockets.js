@@ -40,6 +40,7 @@ app.sockets.on('connection', function(socket)
         walker.on('file', function(root, stat, next)
         {
             var name = stat.name.replace('.tpl', '');
+
             // We need to filter out certain files if we use the default template directory.
             if(['fallback.tpl.html', 'notfound.tpl.html', 'pages.tpl.html'].indexOf(stat.name) == -1 || templatePath != './client/components/pages/partials/')
             {
