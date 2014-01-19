@@ -16,6 +16,7 @@
   "dependencies": {
     "omega-logger": "~0.5.2",
     "omega-wf": "~0.9.12",
+    "walk": "~2.2.1",
     "grunt-develop": "~0.3.0",
     "grunt-html2js": "~0.2.3",
     "grunt-contrib-watch": "~0.5.3",

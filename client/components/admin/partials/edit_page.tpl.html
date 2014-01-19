@@ -42,9 +42,7 @@
             </div>
             <div class="form-group">
                 <label for="pageTemplate">Template</label>
-                <select ng-model="page.template" id="pageTemplate" class="form-control">
-                    <option value="">default.html</option>
-                </select>
+                <select ng-model="page.template" id="pageTemplate" class="form-control" ng-options="page.template as page.base for page in page_templates"></select>
             </div>
             <div class="form-group">
                 <label for="pageContent">Content</label>

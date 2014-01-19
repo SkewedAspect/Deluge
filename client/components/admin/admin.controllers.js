@@ -1,7 +1,25 @@
 module.controller('AdminController', function($scope, $routeParams, $location)
 {
     $scope.slug = $routeParams.slug || '/';
-    $scope.page = {};
+    $scope.page = { template: '/components/pages/partials/default.html' };
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    // Get a list of templates
+    $scope.socket.emit('list page templates', function(error, templates)
+    {
+        if(error)
+        {
+            console.error('Error getting page templates:', error);
+        }
+        else
+        {
+            $scope.$apply(function()
+            {
+                $scope.page_templates = templates || [];
+            });
+        } // end if
+    })
 
     //------------------------------------------------------------------------------------------------------------------
     // Route admin section

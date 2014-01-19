@@ -24,7 +24,13 @@ module.exports = {
     port: 7070,
 
     // Title of the application
-    title: "Deluge CMS"
+    title: "Deluge CMS",
+
+    // Directory containing templates for the pages app
+    //pageTemplates: './client/templates',
+
+    // Directory containing templates for the articles app
+    //articleTemplates: './client/templates',
 }; // end exports
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -4,8 +4,13 @@
 // @module sockets.js
 //----------------------------------------------------------------------------------------------------------------------
 
+var path = require('path');
+
 var app = require('omega-wf').app;
 var async = require('async');
+var walk = require('walk');
+
+var config = require('../config');
 var models = require('./models');
 
 var logger = require('omega-wf').logging.loggerFor(module);
@@ -20,6 +25,36 @@ app.sockets.on('connection', function(socket)
     var user = socket.handshake.user;
 
     console.log('user:', user);
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Page Templates
+    //------------------------------------------------------------------------------------------------------------------
+
+    socket.on('list page templates', function(cb)
+    {
+        var templatePath = config.get('pageTemplates', './client/components/pages/partials/');
+        var walker = walk.walk(templatePath, { followLinks: true });
+
+        var templates = [];
+
+        walker.on('file', function(root, stat, next)
+        {
+            var name = stat.name.replace('.tpl', '');
+            // We need to filter out certain files if we use the default template directory.
+            if(['fallback.tpl.html', 'notfound.tpl.html', 'pages.tpl.html'].indexOf(stat.name) == -1 || templatePath != './client/components/pages/partials/')
+            {
+                var templateUrlRoot = root.replace('./client', '');
+                templates.push({ base: name, template: templateUrlRoot + name });
+            } // end if
+
+            next();
+        });
+
+        walker.on('end', function()
+        {
+            cb(undefined, templates)
+        });
+    });
 
     //------------------------------------------------------------------------------------------------------------------
     // Pages
