@@ -166,9 +166,16 @@ app.sockets.on('connection', function(socket)
     // Articles
     //------------------------------------------------------------------------------------------------------------------
 
-    socket.on('list articles', function(cb)
+    socket.on('list articles', function(includeDrafts, cb)
     {
-        models.Article.find(function(error, articles)
+        filter = { draft: false };
+
+        if(includeDrafts)
+        {
+            var filter = {};
+        } // end if
+
+        models.Article.find(filter, function(error, articles)
         {
             if(error)
             {
