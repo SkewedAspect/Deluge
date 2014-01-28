@@ -179,6 +179,21 @@ app.sockets.on('connection', function(socket)
         });
     });
 
+    //TODO: Is this needed?
+    socket.on('has articles', function(cb)
+    {
+        models.Article.find({ draft: false }, function(error, articles)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving articles: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            // If we get back articles, or we return false
+            cb(error, !!(articles || []).length);
+        });
+    });
+
     socket.on('add article', function(article, cb)
     {
         var model = new models.Article(article);
