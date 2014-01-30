@@ -6,7 +6,7 @@
     </div>
     <div  ng-if="!article.draft" class="alert alert-success">
         <div class="pull-right">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="setLocation(article.slug)"><i class="fa fa-fw fa-eye"></i> View in site</button>
+            <button type="submit" class="btn btn-default btn-sm" ng-click="setLocation('/articles/' + article.slug)"><i class="fa fa-fw fa-eye"></i> View in site</button>
             <button type="submit" class="btn btn-warning btn-sm" ng-click="unpublish(article)"><i class="fa fa-fw fa-download"></i> Unpublish</button>
         </div>
         <span class="text-middle"><strong>Published:</strong> This article has been successfully published. Any edits you make will show up on the live article once you save.</span>
