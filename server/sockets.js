@@ -163,6 +163,37 @@ app.sockets.on('connection', function(socket)
     });
 
     //------------------------------------------------------------------------------------------------------------------
+    // Article Templates
+    //------------------------------------------------------------------------------------------------------------------
+
+    socket.on('list article templates', function(cb)
+    {
+        var templatePath = config.get('articleTemplates', './client/components/articles/partials/');
+        var walker = walk.walk(templatePath, { followLinks: true });
+
+        var templates = [];
+
+        walker.on('file', function(root, stat, next)
+        {
+            var name = stat.name.replace('.tpl', '');
+
+            // We need to filter out certain files if we use the default template directory.
+            if(['fallback.tpl.html', 'notfound.tpl.html', 'articles.tpl.html'].indexOf(stat.name) == -1 || templatePath != './client/components/articles/partials/')
+            {
+                var templateUrlRoot = root.replace('./client', '');
+                templates.push({ base: name, template: templateUrlRoot + name });
+            } // end if
+
+            next();
+        });
+
+        walker.on('end', function()
+        {
+            cb(undefined, templates)
+        });
+    });
+
+    //------------------------------------------------------------------------------------------------------------------
     // Articles
     //------------------------------------------------------------------------------------------------------------------
 
@@ -215,9 +246,22 @@ app.sockets.on('connection', function(socket)
         });
     });
 
-    socket.on('get article', function(slug, cb)
+    socket.on('get article', function(slug, includeDrafts, cb)
     {
-        models.Article.findOne({ slug: slug }, function(error, article)
+        var filter = { slug: slug, draft: false };
+
+        if(arguments.length == 2)
+        {
+            cb = includeDrafts;
+            includeDrafts = false;
+        } // end if
+
+        if(includeDrafts)
+        {
+            filter = { slug: slug };
+        } // end if
+
+        models.Article.findOne(filter, function(error, article)
         {
             if(error)
             {

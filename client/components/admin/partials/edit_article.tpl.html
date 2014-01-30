@@ -1,0 +1,92 @@
+<div class="container container-preview">
+    <div  ng-if="article.draft" class="alert alert-warning">
+        <button type="submit" class="btn btn-primary btn-sm pull-right" ng-click="publish(article)"><i class="fa fa-fw fa-upload"></i> Publish</button>
+        <span class="text-middle"><strong>Draft:</strong> This article will not be publicly viewable until you publish it.</span>
+        <div style="clear:both"></div>
+    </div>
+    <div  ng-if="!article.draft" class="alert alert-success">
+        <div class="pull-right">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="setLocation(article.slug)"><i class="fa fa-fw fa-eye"></i> View in site</button>
+            <button type="submit" class="btn btn-warning btn-sm" ng-click="unpublish(article)"><i class="fa fa-fw fa-download"></i> Unpublish</button>
+        </div>
+        <span class="text-middle"><strong>Published:</strong> This article has been successfully published. Any edits you make will show up on the live article once you save.</span>
+        <div style="clear:both"></div>
+    </div>
+</div>
+
+<div class="container container-preview">
+    <div class="row">
+        <div class="col-md-6 preview-include visible-sm">
+            <hr class="hidden-md hidden-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-fw fa-desktop"></i> Article Preview</h3>
+                </div>
+            </div>
+            <div ng-include="article.template || '/components/articles/partials/default.html'"></div>
+            <hr class="hidden-md hidden-lg">
+        </div>
+        <form role="form" class="col-md-6 preview-form">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <label for="articleTitle">Title</label>
+                        <input ng-model="article.title" type="text" class="form-control" id="articleTitle" placeholder="Enter Article Title">
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="articleSlug">Slug</label>
+                        <input type="text" class="form-control" id="articleSlug" ng-model="article.slug" disabled>
+                        <!--slug from="article.title" to="article.slug"></slug-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="articleTitle">Tagline</label>
+                <input ng-model="article.tagline" type="text" class="form-control" id="articleTagline" placeholder="Some snazzy tagline">
+            </div>
+            <div class="form-group">
+                <label for="articleTemplate">Template</label>
+                <select ng-model="article.template" id="articleTemplate" class="form-control" ng-options="article.template as article.base for article in article_templates"></select>
+            </div>
+            <div class="form-group">
+                <label>Tags</label>
+                <ng-tags model="article.tags" tag-class="'label-primary'" replace-spaces="true"></ng-tags>
+            </div>
+            <div class="form-group">
+                <label for="articleContent">Content</label>
+                <div id="articleContent" ng-class="'form-control'" ng-model="article.content" ui-codemirror="{ lineWrapping : true, mode: 'gfm' }"></div>
+            </div>
+
+            <hr>
+
+            <div class="pull-left hidden-xs">
+                <button type="submit" class="btn btn-danger" ng-click="remove(article.slug)" title="Delete this article completely."><i class="fa fa-fw fa-trash-o"></i> Delete</button>
+            </div>
+            <div class="pull-right hidden-xs">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-default" ng-click="save(article, 'continue')" title="Save changes, but stay on this article."><i class="fa fa-fw fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-default" ng-click="save(article)" title="Save changes and go back to Admin."><i class="fa fa-fw fa-check"></i> Finish</button>
+                </div>
+                <button ng-if="article.draft" type="submit" class="btn btn-primary" ng-click="publish(article)" title="Save changes and make the article publicly visible."><i class="fa fa-fw fa-upload"></i> Publish</button>
+                <button ng-if="article.draft == false" type="submit" class="btn btn-warning" ng-click="unpublish(article)" title="Save the article as a draft, making it no longer public."><i class="fa fa-fw fa-download"></i> Unpublish</button>
+            </div>
+            <div class="btn-group btn-group-justified visible-xs">
+                <a type="submit" class="btn btn-danger" ng-click="remove(article.slug)" title="Delete this article completely."><i class="fa fa-fw fa-trash-o tiny-hidden"></i> Delete</a>
+                <a type="submit" class="btn btn-default" ng-click="save(article, 'continue')" title="Save changes, but stay on this article."><i class="fa fa-fw fa-save tiny-hidden"></i> Save</a>
+                <a type="submit" class="btn btn-default" ng-click="save(article)" title="Save changes and go back to Admin."><i class="fa fa-fw fa-check tiny-hidden"></i> Finish</a>
+                <a ng-if="article.draft" type="submit" class="btn btn-primary" ng-click="publish(article)" title="Save changes and make the article publicly visible."><i class="fa fa-fw fa-upload tiny-hidden"></i> Publish</a>
+                <a ng-if="article.draft == false" type="submit" class="btn btn-warning" ng-click="unpublish(article)" title="Save the article as a draft, making it no longer public."><i class="fa fa-fw fa-download tiny-hidden"></i> Unpublish</a>
+            </div>
+        </form>
+        <div class="col-md-6 preview-include hidden-sm hidden-xs">
+            <hr class="hidden-md hidden-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-fw fa-desktop"></i> Article Preview</h3>
+                </div>
+            </div>
+            <div ng-include="article.template || '/components/articles/partials/default.html'"></div>
+            <hr class="hidden-md hidden-lg">
+        </div>
+    </div>
+</div>

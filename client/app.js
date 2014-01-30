@@ -7,9 +7,12 @@
 window.app = angular.module("deluge", [
         'ngRoute',
         'ngResource',
+
         'slugifier',
         'ui.bootstrap',
         'ui.codemirror',
+
+        'ui.ngTags',
         'client.templates',
         'components.filters',
         'components.directives',
