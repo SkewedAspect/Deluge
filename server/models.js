@@ -62,6 +62,7 @@ module.exports = ns.define({
         tags: fields.List({ type: fields.String() }),
 
         draft: fields.Boolean({ default: true }),
+        featured: fields.Boolean({ default: false }),
         created: fields.DateTime({ first: true }),
         modified: fields.DateTime({ auto: true }),
 

@@ -32,9 +32,21 @@
                 <label for="articleTemplate">Template</label>
                 <select ng-model="article.template" id="articleTemplate" class="form-control" ng-options="article.template as article.base for article in article_templates"></select>
             </div>
-            <div class="form-group">
-                <label>Tags</label>
-                <ng-tags model="article.tags" tag-class="'label-primary'" replace-spaces="true"></ng-tags>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <ng-tags model="article.tags" tag-class="'label-primary'" replace-spaces="true"></ng-tags>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Featured Article</label>
+                        <button class="btn btn-block" ng-class="{'btn-primary': !article.featured, 'btn-warning': article.featured }" ng-click="article.featured = !article.featured">
+                            <i class="fa fa-fw" ng-class="{'fa-star': article.featured, 'fa-star-o': !article.featured}"></i>{{ { false: 'Make', true: 'Remove'}[!!article.featured] }} Featured
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label for="articleContent">Content</label>

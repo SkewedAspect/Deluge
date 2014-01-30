@@ -61,12 +61,13 @@
                 <h4 class="text-center">No Articles, yet.</h4>
             </div>
             <table class="table table-bordered table-striped table-admin">
-                <tr ng-repeat="article in articles">
+                <tr ng-repeat="article in articles | orderBy: 'featured'">
                     <td>
                         <span ng-switch="!!article.draft" style="margin-right: 5px">
                             <span ng-switch-when="false" class="label label-success">Published</span>
                             <span ng-switch-when="true" class="label label-warning">Draft</span>
                         </span>
+                        <span ng-if="!!article.featured" class="label label-info">Featured</span>
                         <a href="/articles/{{ article.slug }}">{{ article.title }}</a>
                     </td>
                     <td class="hidden-xs">
