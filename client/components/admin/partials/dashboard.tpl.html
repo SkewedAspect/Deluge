@@ -61,7 +61,7 @@
                 <h4 class="text-center">No Articles, yet.</h4>
             </div>
             <table class="table table-bordered table-striped table-admin">
-                <tr ng-repeat="article in articles | orderBy: 'featured'">
+                <tr ng-repeat="article in articles | orderBy: '!featured'">
                     <td>
                         <span ng-switch="!!article.draft" style="margin-right: 5px">
                             <span ng-switch-when="false" class="label label-success">Published</span>
