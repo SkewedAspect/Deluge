@@ -4,29 +4,53 @@
 // @module articles.directives.js
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ---------------------------------------------------------------------------------------------------------------------
-
-module.directive('featuredArticles', function()
+function sortByDate(array)
 {
-    return {
-        restrict: 'EA',
-        templateUrl: '/components/articles/partials/featured.html',
-        controller: function()
-        {
+    return array.sort(function(a, b) {
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return a < b ? -1 : a > b ? 1 : 0;
+    }).reverse();
+} // end sortByDate
 
-        }
-    }
-});
 // ---------------------------------------------------------------------------------------------------------------------
 
 module.directive('recentArticles', function()
 {
     return {
-        restrict: 'EA',
+        restrict: 'E',
+        scope: {
+            drafts: '&includeDrafts',
+            featured: '&includeFeatured',
+            featuredOnly: '&',
+            limit: '&'
+        },
         templateUrl: '/components/articles/partials/recent.html',
-        controller: function()
+        controller: function($scope)
         {
+            var filter = { featured: (!!$scope.featuredOnly() || !!$scope.featured()), draft: !!$scope.drafts() };
+            if($scope.featured())
+            {
+                filter = { draft: !!$scope.drafts() };
+            } // end if
 
+            $scope.$root.socket.emit('find articles', filter, function(error, articles)
+            {
+                if(error)
+                {
+                    console.log('Error:', error);
+                }
+                else
+                {
+                    $scope.$apply(function()
+                    {
+                        var limit = ($scope.limit() || articles.length);
+
+                        articles = sortByDate(articles);
+                        $scope.articles = articles.splice(0, limit);
+                    });
+                } // end if
+            });
         }
     }
 });
@@ -35,11 +59,50 @@ module.directive('recentArticles', function()
 module.directive('listArticles', function()
 {
     return {
-        restrict: 'EA',
-        templateUrl: '/components/articles/partials/list.html',
-        controller: function()
-        {
+        restrict: 'E',
+        scope: {
+            drafts: '&includeDrafts',
+            featured: '&includeFeatured',
+            itemsPerPage: '&'
 
+        },
+        templateUrl: '/components/articles/partials/list.html',
+        controller: function($scope)
+        {
+            var filter = { featured: !!$scope.featured(), draft: !!$scope.drafts() };
+            if($scope.featured() == undefined || $scope.featured())
+            {
+                filter = { draft: !!$scope.drafts() };
+            } // end if
+
+            $scope.shouldDisplay = function(index)
+            {
+                var perPage = ($scope.itemsPerPage() || 10);
+                var startIdx = (($scope.curPage || 1) - 1) * perPage;
+                var endIdx = startIdx + perPage;
+
+                if(index >= startIdx && index < endIdx)
+                {
+                    return true;
+                } // end if
+
+                return false;
+            };
+
+            $scope.$root.socket.emit('find articles', filter, function(error, articles)
+            {
+                if(error)
+                {
+                    console.log('Error:', error);
+                }
+                else
+                {
+                    $scope.$apply(function()
+                    {
+                        $scope.articles = articles;
+                    });
+                } // end if
+            });
         }
     }
 });

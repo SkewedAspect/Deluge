@@ -1,0 +1,14 @@
+<ul class="articles-list">
+    <li  ng-if="shouldDisplay($index)" class="featured-article" ng-repeat="article in articles | orderBy: ['!featured', '-created']">
+        <div class="pull-right text-right">
+            <span ng-if="article.featured" class="label label-warning">FEATURED</span>
+            <span class="label label-primary" ng-repeat="tag in article.tags">{{ tag.toUpperCase() }}</span>
+            <div class="byline">
+                by <b>Chris Case</b> <small>{{ article.created | date:'fullDate' }}</small>
+            </div>
+        </div>
+        <h2><a href="/articles/{{ article.slug }}">{{ article.title }}</a></h2>
+        <div class="tagline text-muted">{{ article.tagline }}</div>
+    </li>
+</ul>
+<pager total-items="articles.length" items-per-page="(itemsPerPage() || 10)"  page="curPage" previous-text="« Newer" next-text="Older »"></pager>

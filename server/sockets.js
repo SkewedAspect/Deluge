@@ -178,7 +178,7 @@ app.sockets.on('connection', function(socket)
             var name = stat.name.replace('.tpl', '');
 
             // We need to filter out certain files if we use the default template directory.
-            if(['fallback.tpl.html', 'notfound.tpl.html', 'articles.tpl.html'].indexOf(stat.name) == -1 || templatePath != './client/components/articles/partials/')
+            if(['fallback.tpl.html', 'notfound.tpl.html', 'articles.tpl.html', 'recent.tpl.html', 'list.tpl.html'].indexOf(stat.name) == -1 || templatePath != './client/components/articles/partials/')
             {
                 var templateUrlRoot = root.replace('./client', '');
                 templates.push({ base: name, template: templateUrlRoot + name });
@@ -206,6 +206,19 @@ app.sockets.on('connection', function(socket)
             var filter = {};
         } // end if
 
+        models.Article.find(filter, function(error, articles)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving articles: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error, articles);
+        });
+    });
+
+    socket.on('find articles', function(filter, cb)
+    {
         models.Article.find(filter, function(error, articles)
         {
             if(error)
