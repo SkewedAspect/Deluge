@@ -23,7 +23,8 @@ module.directive('recentArticles', function()
             drafts: '&includeDrafts',
             featured: '&includeFeatured',
             featuredOnly: '&',
-            limit: '&'
+            limit: '&',
+            tags: '&'
         },
         templateUrl: '/components/articles/partials/recent.html',
         controller: function($scope)
@@ -34,7 +35,17 @@ module.directive('recentArticles', function()
                 filter = { draft: !!$scope.drafts() };
             } // end if
 
-            $scope.$root.socket.emit('find articles', filter, function(error, articles)
+            var tags = [];
+            if(typeof $scope.tags() == 'string')
+            {
+                tags.push($scope.tags());
+            }
+            else
+            {
+                tags = $scope.tags();
+            } // end if
+
+            $scope.$root.socket.emit('find articles', filter, tags, function(error, articles)
             {
                 if(error)
                 {
@@ -63,8 +74,8 @@ module.directive('listArticles', function()
         scope: {
             drafts: '&includeDrafts',
             featured: '&includeFeatured',
-            itemsPerPage: '&'
-
+            itemsPerPage: '&',
+            tags: '&'
         },
         templateUrl: '/components/articles/partials/list.html',
         controller: function($scope)
@@ -89,7 +100,17 @@ module.directive('listArticles', function()
                 return false;
             };
 
-            $scope.$root.socket.emit('find articles', filter, function(error, articles)
+            var tags = [];
+            if(typeof $scope.tags() == 'string')
+            {
+                tags.push($scope.tags());
+            }
+            else
+            {
+                tags = $scope.tags();
+            } // end if
+
+            $scope.$root.socket.emit('find articles', filter, tags, function(error, articles)
             {
                 if(error)
                 {

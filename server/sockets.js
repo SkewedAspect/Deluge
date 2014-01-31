@@ -9,6 +9,7 @@ var path = require('path');
 var app = require('omega-wf').app;
 var async = require('async');
 var walk = require('walk');
+var _ = require('lodash');
 
 var config = require('../config');
 var models = require('./models');
@@ -217,8 +218,19 @@ app.sockets.on('connection', function(socket)
         });
     });
 
-    socket.on('find articles', function(filter, cb)
+    socket.on('find articles', function(filter, tags, cb)
     {
+        if(arguments.length == 2)
+        {
+            cb = tags;
+            tags = [];
+        } // end if
+
+        if(!tags)
+        {
+            tags = [];
+        } // end if
+
         models.Article.find(filter, function(error, articles)
         {
             if(error)
@@ -226,7 +238,34 @@ app.sockets.on('connection', function(socket)
                 logger.error('Error retrieving articles: %s\n  %s', error.message || error.toString(), error.stack || "");
             } // end if
 
-            cb(error, articles);
+            if(tags.length)
+            {
+                var matched = [];
+                for(var idx = 0; idx < articles.length; idx++)
+                {
+                    var match = true;
+                    var article = articles[idx];
+                    for(var ydx = 0; ydx < tags.length; ydx++)
+                    {
+                        var tag = tags[ydx];
+                        if(!_.contains(article.tags, tag))
+                        {
+                            match = false;
+                            break;
+                        } // end if
+                    } // end for
+
+                    if(match)
+                    {
+                        matched.push(article);
+                    } // end if
+                } // end for
+                cb(error, matched);
+            }
+            else
+            {
+                cb(error, articles);
+            } // end if
         });
     });
 
