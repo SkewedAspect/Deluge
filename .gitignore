@@ -11,3 +11,6 @@ node_modules
 
 # Jetbrains IDE project files
 .idea
+
+# Database
+db

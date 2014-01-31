@@ -22,6 +22,7 @@ module.exports = function(grunt)
 				less: "client/components/**/*.less",
                 js: "client/components/**/*.js",
                 controllers: "client/components/**/*controller*.js",
+                directives: "client/components/**/*directive*.js",
                 filters: "client/components/**/*filter*.js"
 			}
 		},
@@ -175,8 +176,8 @@ module.exports = function(grunt)
                 }
             },
             client_js: {
-                files: ['<%= project.components.controllers %>', '<%= project.components.filters %>'],
-                tasks: ['controllers', 'filters'],
+                files: ['<%= project.components.controllers %>', '<%= project.components.directives %>', '<%= project.components.filters %>'],
+                tasks: ['controllers', 'directives', 'filters'],
                 options: {
                     livereload: true,
                     atBegin: true
@@ -214,6 +215,11 @@ module.exports = function(grunt)
     // Task for building controllers.js
     grunt.registerTask('controllers', 'build components.controllers.js file', function () {
         grunt.file.copy('client/js/components.controllers.tpl.js', 'built/js/components.controllers.js', { process: grunt.template.process });
+    });
+
+    // Task for building directives.js
+    grunt.registerTask('directives', 'build components.directives.js file', function () {
+        grunt.file.copy('client/js/components.directives.tpl.js', 'built/js/components.directives.js', { process: grunt.template.process });
     });
 
     // Task for building filters.js

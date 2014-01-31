@@ -7,11 +7,15 @@
 window.app = angular.module("deluge", [
         'ngRoute',
         'ngResource',
+
         'slugifier',
         'ui.bootstrap',
         'ui.codemirror',
+
+        'ui.ngTags',
         'client.templates',
         'components.filters',
+        'components.directives',
         'components.controllers'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider)
@@ -20,6 +24,7 @@ window.app = angular.module("deluge", [
         $routeProvider
             .when('/admin/:section?', { templateUrl: '/components/admin/partials/dashboard.html',  controller: 'AdminController'})
             .when('/admin/:section/:slug*?', { templateUrl: '/components/admin/partials/dashboard.html',  controller: 'AdminController'})
+            .when('/articles/:slug', { templateUrl: '/components/articles/partials/articles.html',   controller: 'ArticlesController'})
             .when('/:slug*?', { templateUrl: '/components/pages/partials/pages.html',   controller: 'PagesController'})
             .otherwise({redirectTo: '/'});
 

@@ -1,0 +1,77 @@
+<div class="container container-preview">
+    <div class="row">
+        <div class="col-md-6 preview-include visible-sm">
+            <hr class="hidden-md hidden-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-fw fa-desktop"></i> Article Preview</h3>
+                </div>
+            </div>
+            <div ng-include="article.template || '/components/articles/partials/default.html'"></div>
+            <hr class="hidden-md hidden-lg">
+        </div>
+        <form role="form" class="col-md-6 preview-form">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <label for="articleTitle">Title</label>
+                        <input ng-model="article.title" type="text" class="form-control" id="articleTitle" placeholder="Enter Article Title">
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="articleSlug">Slug</label>
+                        <input type="text" class="form-control" id="articleSlug" ng-model="article.slug">
+                        <slug from="article.title" to="article.slug"></slug>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="articleTitle">Tagline</label>
+                <input ng-model="article.tagline" type="text" class="form-control" id="articleTagline" placeholder="Some snazzy tagline">
+            </div>
+            <div class="form-group">
+                <label for="articleTemplate">Template</label>
+                <select ng-model="article.template" id="articleTemplate" class="form-control" ng-options="article.template as article.base for article in article_templates"></select>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <ng-tags model="article.tags" tag-class="'label-primary'" replace-spaces="true"></ng-tags>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Featured Article</label>
+                        <button class="btn btn-block" ng-class="{'btn-primary': !article.featured, 'btn-warning': article.featured }" ng-click="article.featured = !article.featured">
+                            <i class="fa fa-fw" ng-class="{'fa-star': article.featured, 'fa-star-o': !article.featured}"></i>{{ { false: 'Make', true: 'Remove'}[!!article.featured] }} Featured
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="articleContent">Content</label>
+                <div id="articleContent" ng-class="'form-control'" ng-model="article.content" ui-codemirror="{ lineWrapping : true, mode: 'gfm' }"></div>
+            </div>
+
+            <hr>
+            <div class="pull-right hidden-xs">
+                <button type="submit" class="btn btn-default" ng-click="save(article)"><i class="fa fa-fw fa-save"></i> Save as Draft</button>
+                <button type="submit" class="btn btn-primary" ng-click="publish(article)"><i class="fa fa-fw fa-upload"></i> Publish</button>
+            </div>
+            <div class="btn-group btn-group-justified visible-xs">
+                <a type="submit" class="btn btn-default" ng-click="save(article)"><i class="fa fa-fw fa-save"></i> Save as Draft</a>
+                <a type="submit" class="btn btn-primary" ng-click="publish(article)"><i class="fa fa-fw fa-upload"></i> Publish</a>
+            </div>
+        </form>
+        <div class="col-md-6 preview-include hidden-sm hidden-xs">
+            <hr class="hidden-md hidden-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-fw fa-desktop"></i> Article Preview</h3>
+                </div>
+            </div>
+            <div ng-include="article.template || '/components/articles/partials/default.html'"></div>
+            <hr class="hidden-md hidden-lg">
+        </div>
+    </div>
+</div>

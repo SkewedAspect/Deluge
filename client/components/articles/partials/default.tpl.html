@@ -1,0 +1,11 @@
+<div ng-if="!preview" ng-include="'/components/header/header.html'"></div>
+<h2 class="text-center">{{ article.title }}</h2>
+<h4 class="text-center text-muted">{{ article.tagline }}</h4>
+<div class="container byline">
+    <div class="pull-right">
+        <span ng-if="article.featured" class="label label-warning">FEATURED</span>
+        <span class="label label-primary" ng-repeat="tag in article.tags">{{ tag.toUpperCase() }}</span>
+    </div>
+    by <b>Chris Case</b> <small>{{ article.created | date:'fullDate' }}</small>
+</div>
+<div class="container" ng-bind-html="article.content | markdown"></div>

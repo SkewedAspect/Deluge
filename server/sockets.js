@@ -163,12 +163,50 @@ app.sockets.on('connection', function(socket)
     });
 
     //------------------------------------------------------------------------------------------------------------------
+    // Article Templates
+    //------------------------------------------------------------------------------------------------------------------
+
+    socket.on('list article templates', function(cb)
+    {
+        var templatePath = config.get('articleTemplates', './client/components/articles/partials/');
+        var walker = walk.walk(templatePath, { followLinks: true });
+
+        var templates = [];
+
+        walker.on('file', function(root, stat, next)
+        {
+            var name = stat.name.replace('.tpl', '');
+
+            // We need to filter out certain files if we use the default template directory.
+            if(['fallback.tpl.html', 'notfound.tpl.html', 'articles.tpl.html', 'recent.tpl.html', 'list.tpl.html'].indexOf(stat.name) == -1 || templatePath != './client/components/articles/partials/')
+            {
+                var templateUrlRoot = root.replace('./client', '');
+                templates.push({ base: name, template: templateUrlRoot + name });
+            } // end if
+
+            next();
+        });
+
+        walker.on('end', function()
+        {
+            cb(undefined, templates)
+        });
+    });
+
+    //------------------------------------------------------------------------------------------------------------------
     // Articles
     //------------------------------------------------------------------------------------------------------------------
 
-    socket.on('list articles', function(cb)
+    socket.on('list articles', function(includeDrafts, cb)
     {
-        models.Article.find(function(error, articles)
+        filter = { draft: false };
+
+        if(includeDrafts)
+        {
+            var filter = {};
+        } // end if
+
+        models.Article.find(filter, function(error, articles)
         {
             if(error)
             {
@@ -176,6 +214,34 @@ app.sockets.on('connection', function(socket)
             } // end if
 
             cb(error, articles);
+        });
+    });
+
+    socket.on('find articles', function(filter, cb)
+    {
+        models.Article.find(filter, function(error, articles)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving articles: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error, articles);
+        });
+    });
+
+    //TODO: Is this needed?
+    socket.on('has articles', function(cb)
+    {
+        models.Article.find({ draft: false }, function(error, articles)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving articles: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            // If we get back articles, or we return false
+            cb(error, !!(articles || []).length);
         });
     });
 
@@ -193,9 +259,22 @@ app.sockets.on('connection', function(socket)
         });
     });
 
-    socket.on('get article', function(slug, cb)
+    socket.on('get article', function(slug, includeDrafts, cb)
     {
-        models.Article.findOne({ slug: slug }, function(error, article)
+        var filter = { slug: slug, draft: false };
+
+        if(arguments.length == 2)
+        {
+            cb = includeDrafts;
+            includeDrafts = false;
+        } // end if
+
+        if(includeDrafts)
+        {
+            filter = { slug: slug };
+        } // end if
+
+        models.Article.findOne(filter, function(error, article)
         {
             if(error)
             {

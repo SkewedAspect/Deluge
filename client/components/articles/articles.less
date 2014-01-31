@@ -1,0 +1,67 @@
+//----------------------------------------------------------------------------------------------------------------------
+// Custom styling for the articles component
+//----------------------------------------------------------------------------------------------------------------------
+
+.byline {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 9px 3px;
+    margin-bottom: 10px;
+
+    .label {
+        margin-left: 0;
+        margin-right: 5px;
+    }
+
+    .label:last-of-type {
+        margin-right: 0;
+    }
+}
+
+.articles-list {
+    margin: 0;
+    padding: 0;
+
+    list-style-type: none;
+
+    .byline {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .label {
+        margin-left: 0;
+        margin-right: 5px;
+    }
+
+    .label:last-of-type {
+        margin-right: 0;
+    }
+
+    li.featured-article {
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        padding: 8px 5px;
+
+        & + li.featured-article {
+            border-top: none;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.35em;
+        }
+
+        .byline {
+            font-size: .75em;
+            line-height: 30px;
+        }
+
+        .tagline {
+            text-indent: 10px;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
