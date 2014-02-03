@@ -26,7 +26,12 @@
                 </p>
             </li>
             <li ng-show="user">
-                <p class="navbar-text">{{ user.email || user.name || user.nick }}</p>
+                <div class="navbar-text user-line">
+                    <div class="img-rounded avatar">
+                        <img  class="img-rounded" ng-src="{{ user.avatar + '?sz=80' || 'about:blank' }}">
+                    </div>
+                    {{ user.email || user.name || user.nick }}
+                </div>
                 <button ng-if="user.admin" class="btn btn-default navbar-btn" title="Admin Section" ng-click="setLocation('/admin')"><i class="fa fa-fw fa-lg fa-gears"></i></button>
             </li>
         </ul>
