@@ -11,13 +11,32 @@
     <div class="container" ng-switch-default>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <button class="btn btn-primary btn-sm pull-right" ng-click="setLocation('/admin/add_user')"><i class="fa fa-fw fa-plus"></i> Add User</button>
+                <!--button class="btn btn-primary btn-sm pull-right" ng-click="setLocation('/admin/add_user')"><i class="fa fa-fw fa-plus"></i> Add User</button-->
                 <h3 class="panel-title"><i class="fa fa-fw fa-user"></i> Users</h3>
                 <div style="clear:both"></div>
             </div>
-            <div class="panel-body">
-                <h4 ng-if="!users || users.length == 0" class="text-center">No Users, yet.</h4>
+            <div ng-if="!users || users.length == 0" class="panel-body">
+                <h4 class="text-center">No Users, yet.</h4>
             </div>
+            <table class="table table-bordered table-striped table-admin">
+                <tr ng-repeat="user in users">
+                    <td>
+                        <div ng-if="!!user.admin" class="labels users">
+                            <span class="label label-danger">Admin</span>
+                        </div>
+                        <span><img class="img-rounded avatar" ng-src="{{ user.avatar + '?sz=80' }}">{{ user.name }}</span>
+                    </td>
+                    <td class="hidden-xs">
+                        {{ user.email }}
+                    </td>
+                    <td style="width: 1%">
+                        <div class="btn-group btn-group-justified" style="min-width: 200px">
+                            <a class="btn btn-primary btn-block" ng-click="setLocation('/admin/user/' + user.slug)"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                            <a class="btn btn-danger btn-block" ng-click="removePage(user.slug)"><i class="fa fa-fw fa-trash-o"></i> Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="panel panel-default">
@@ -32,10 +51,10 @@
             <table class="table table-bordered table-striped table-admin">
                 <tr ng-repeat="page in pages">
                     <td>
-                        <span ng-switch="!!page.draft" style="margin-right: 5px">
+                        <div ng-switch="!!page.draft" class="labels">
                             <span ng-switch-when="false" class="label label-success">Published</span>
                             <span ng-switch-when="true" class="label label-warning">Draft</span>
-                        </span>
+                        </div>
                         <a href="{{ page.slug }}">{{ page.title }}</a>
                     </td>
                     <td class="hidden-xs">
@@ -63,11 +82,11 @@
             <table class="table table-bordered table-striped table-admin">
                 <tr ng-repeat="article in articles | orderBy: '!featured'">
                     <td>
-                        <span ng-switch="!!article.draft" style="margin-right: 5px">
+                        <div ng-switch="!!article.draft" class="labels">
+                            <span ng-if="!!article.featured" class="label label-info">Featured</span>
                             <span ng-switch-when="false" class="label label-success">Published</span>
                             <span ng-switch-when="true" class="label label-warning">Draft</span>
-                        </span>
-                        <span ng-if="!!article.featured" class="label label-info">Featured</span>
+                        </div>
                         <a href="/articles/{{ article.slug }}">{{ article.title }}</a>
                     </td>
                     <td class="hidden-xs">

@@ -8,6 +8,38 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
     //------------------------------------------------------------------------------------------------------------------
 
+    if(!$scope.user || !$scope.user.admin)
+    {
+        $location.path('/');
+    } // end if
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    function listUsers(callback)
+    {
+        callback = callback || function(){};
+
+        // Get a list of users
+        $scope.socket.emit('list users', function(error, users)
+        {
+            if(error)
+            {
+                console.error('Error getting user:', error);
+                callback(error)
+            }
+            else
+            {
+                $scope.$apply(function()
+                {
+                    $scope.users = users || [];
+                    callback(error);
+                });
+            } // end if
+        });
+    } // listUsers
+
+    //------------------------------------------------------------------------------------------------------------------
+
     // Get a list of page templates
     $scope.socket.emit('list page templates', function(error, templates)
     {
@@ -81,6 +113,9 @@ module.controller('AdminController', function($scope, $routeParams, $location)
         case 'add_article':
             $scope.page_title = "Add New Article";
             $scope.admin_tpl = '/components/admin/partials/add_article.html';
+
+            // List users
+            listUsers();
 
             $scope.publish = function(article)
             {
@@ -169,6 +204,9 @@ module.controller('AdminController', function($scope, $routeParams, $location)
         case 'article':
             $scope.page_title = "Edit '" + $scope.slug + "' article";
             $scope.admin_tpl = '/components/admin/partials/edit_article.html';
+
+            // List users
+            listUsers();
 
             $scope.socket.emit('get article', $scope.slug, includeDrafts, function(error, article)
             {
@@ -277,6 +315,9 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
     if(!$scope.admin_tpl)
     {
+        // List users
+        listUsers();
+
         // List pages
         $scope.socket.emit('list pages', includeDrafts, function(error, pages)
         {

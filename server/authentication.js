@@ -56,11 +56,6 @@ app.init(function()
         },
         function(tokens, profile, done)
         {
-            models.User.find(function(error, users)
-            {
-                console.log('All Users:', users);
-            });
-
             models.User.findOne({ id: profile.id }, function(error, user)
             {
                 if(error)
@@ -69,21 +64,21 @@ app.init(function()
                 }
                 else
                 {
-                    console.log('found user:', user);
 
                     var imageURL = "";
                     if(profile.image)
                     {
-                        imageURL = profile.image.url;
+                        // Strip query parameters
+                        imageURL = profile.image.url.replace(/\?.*$/, '');
                     } // end if
 
                     if(user)
                     {
                         // Update user
-                        user.name = profile.displayName;
-                        user.email = profile.email || user.email;
-                        user.nick = profile.nickname;
-                        user.avatar = imageURL;
+                        user.name = user.name || profile.displayName;
+                        user.email = user.email || profile.email;
+                        user.nick = user.nick || profile.nickname;
+                        user.avatar = user.avatar || imageURL;
                         user.tokens = tokens;
 
                         user.save(function()
