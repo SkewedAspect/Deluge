@@ -122,6 +122,10 @@ module.exports = function(grunt)
                     'mode/yaml/yaml.js'
                 ]
             },
+            'angular-gplus': {
+                basepath: 'https://raw.github.com/sirkitree/angular-directive.g-signin/master/',
+                src: ['google-plus-signin.js']
+            },
             highlightjs: {
                 basepath: 'http://yandex.st/highlightjs/8.0/',
                 src: ['highlight.min.js', 'styles/github.min.css']

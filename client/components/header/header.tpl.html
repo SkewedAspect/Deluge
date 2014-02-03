@@ -14,11 +14,20 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" collapse="userCollapsed">
         <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
-            <li>
-                <p class="navbar-text">chris.case@g33xnexus.com</p>
+            <li ng-hide="user">
+                <p class="navbar-text signin">
+                    <google-plus-signin
+                            class="g-signin"
+                            clientid="485489730379-caf5m39htm084go21i4k9l4142s2as0l"
+                            redirecturi="postmessage"
+                            accesstype="offline"
+                            >
+                    </google-plus-signin>
+                </p>
             </li>
-            <li>
-                <button class="btn btn-default navbar-btn" title="Admin Section" ng-click="setLocation('/admin')"><i class="fa fa-fw fa-lg fa-gears"></i></button>
+            <li ng-show="user">
+                <p class="navbar-text">{{ user.email || user.name || user.nick }}</p>
+                <button ng-if="user.admin" class="btn btn-default navbar-btn" title="Admin Section" ng-click="setLocation('/admin')"><i class="fa fa-fw fa-lg fa-gears"></i></button>
             </li>
         </ul>
     </div>

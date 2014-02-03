@@ -13,11 +13,15 @@ var ns = om.namespace('deluge').backend(new SimpleBackend({ rootDir: './db' }));
 
 module.exports = ns.define({
     User: {
-        email: fields.String({ key: true }),
+        id: fields.String({ key: true }),
+        email: fields.String(),
         name: fields.String(),
         nick: fields.String(),
+        avatar: fields.String(),
         admin: fields.Boolean({ default: false }),
-        groups: fields.List({ type: fields.Reference({ model: 'Group' }) })
+        groups: fields.List({ type: fields.Reference({ model: 'Group' }) }),
+
+        tokens: fields.Dict()
     },
 
     Group: {

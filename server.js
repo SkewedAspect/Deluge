@@ -8,10 +8,17 @@ var fs = require('fs');
 var path = require('path');
 
 var app = require('omega-wf').app;
+var auth = require('omega-wf').auth;
 
 var package = require('./package');
-var config = require('./config');
-var sockets = require('./server/sockets');
+var config = require('./config')
+
+var logger = require('omega-logger').loggerFor(module);
+
+//----------------------------------------------------------------------------------------------------------------------
+
+require('./server/authentication');
+require('./server/sockets');
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -21,31 +28,6 @@ app.router.add(
         url: '/client/*',
         path: path.join(__dirname, 'built')
     },
-
-    // Authentication
-    /*
-    {
-        url:'/auth/login-persona',
-        post: function(req, resp)
-        {
-            auth.authenticate('persona', {
-                successRedirect: '/',
-                failureRedirect: '/'
-            })(req, resp, function(error)
-            {
-                console.log("Auth Error!", error);
-            });
-        }
-    },
-    {
-        url: '/auth/logout-persona',
-        post: function(request, response)
-        {
-            request.logout();
-            response.redirect('/');
-        } // end post
-    },
-    */
     {
         url: '*',
         get: function(req, resp)
