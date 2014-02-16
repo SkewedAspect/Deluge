@@ -145,6 +145,47 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
         //--------------------------------------------------------------------------------------------------------------
 
+        case 'user':
+            $scope.page_title = "Edit User '" + $scope.slug + "'";
+            $scope.admin_tpl = '/components/admin/partials/edit_user.html';
+
+            $scope.socket.emit('get user', $scope.slug, function(error, user)
+            {
+                if(error)
+                {
+                    console.error('Error while getting a user.', error);
+                } // end if
+
+                $scope.$apply(function()
+                {
+                    $scope.userObj = user;
+                });
+            });
+
+            $scope.save = function(editUser, stay)
+            {
+                $scope.socket.emit('update user', editUser, function(error)
+                {
+                    if(error)
+                    {
+                        console.error('Error while updating a user.', error);
+                    } // end if
+
+                    if(!stay)
+                    {
+                        $scope.$apply(function()
+                        {
+                            $scope.user = editUser;
+                            $location.path('/admin');
+                        });
+                    } // end if
+                });
+            }; // end $scope.save
+
+            break;
+
+        //--------------------------------------------------------------------------------------------------------------
+
         case 'page':
             $scope.page_title = "Edit '" + $scope.slug + "' Page";
             $scope.admin_tpl = '/components/admin/partials/edit_page.html';
@@ -183,7 +224,7 @@ module.controller('AdminController', function($scope, $routeParams, $location)
                 {
                     if(error)
                     {
-                        console.error('Error while adding a page.', error);
+                        console.error('Error while updating a page.', error);
                     } // end if
 
                     if(!stay)
@@ -261,6 +302,23 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
     //------------------------------------------------------------------------------------------------------------------
 
+    $scope.removeUser = function(id)
+    {
+        $scope.socket.emit('remove user', id, function(error)
+        {
+            if(error)
+            {
+                console.error('Error while removing a user.', error);
+            } // end if
+
+            $scope.$apply(function()
+            {
+                _.remove($scope.users, { id: id });
+                $location.path('/admin');
+            });
+        });
+    };
+
     $scope.removePage = function(slug)
     {
         $scope.socket.emit('remove page', slug, function(error)
@@ -293,22 +351,6 @@ module.controller('AdminController', function($scope, $routeParams, $location)
                 $location.path('/admin');
             });
         });
-    };
-
-    //FIXME: TESTING!!!
-    $scope.tags = function(tag)
-    {
-        switch(tag)
-        {
-            case 'foo':
-                return 'label-warning';
-
-            case 'baz':
-                return 'label-success';
-
-            default:
-                return 'label-primary'
-        }
     };
 
     //------------------------------------------------------------------------------------------------------------------

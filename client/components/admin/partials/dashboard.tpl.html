@@ -19,20 +19,20 @@
                 <h4 class="text-center">No Users, yet.</h4>
             </div>
             <table class="table table-bordered table-striped table-admin">
-                <tr ng-repeat="user in users">
+                <tr ng-repeat="userObj in users">
                     <td>
-                        <div ng-if="!!user.admin" class="labels users">
+                        <div ng-if="!!userObj.admin" class="labels users">
                             <span class="label label-danger">Admin</span>
                         </div>
-                        <span><img class="img-rounded avatar" ng-src="{{ user.avatar + '?sz=80' }}">{{ user.name }}</span>
+                        <span><img class="img-rounded avatar" ng-src="{{ userObj.avatar + '?sz=80' }}">{{ userObj.name }}</span>
                     </td>
                     <td class="hidden-xs">
-                        {{ user.email }}
+                        {{ userObj.email }}
                     </td>
                     <td style="width: 1%">
                         <div class="btn-group btn-group-justified" style="min-width: 200px">
-                            <a class="btn btn-primary btn-block" ng-click="setLocation('/admin/user/' + user.slug)"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                            <a class="btn btn-danger btn-block" ng-click="removePage(user.slug)"><i class="fa fa-fw fa-trash-o"></i> Delete</a>
+                            <a class="btn btn-primary btn-block" ng-click="setLocation('/admin/user/' + userObj.id)"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                            <a class="btn btn-danger btn-block" ng-click="removeUser(userObj.id)"><i class="fa fa-fw fa-trash-o"></i> Delete</a>
                         </div>
                     </td>
                 </tr>

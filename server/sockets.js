@@ -44,6 +44,45 @@ app.sockets.on('connection', function(socket)
         });
     });
 
+    socket.on('get user', function(id, cb)
+    {
+        models.User.findOne({ id: id }, function(error, user)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving user: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error, user);
+        });
+    });
+
+    socket.on('update user', function(user, cb)
+    {
+        models.User.update({ id: user.id }, user, function(error)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving user: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error);
+        });
+    });
+
+    socket.on('remove user', function(id, cb)
+    {
+        models.User.remove({ id: id }, function(error)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving user: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error);
+        });
+    });
+
     //------------------------------------------------------------------------------------------------------------------
     // Page Templates
     //------------------------------------------------------------------------------------------------------------------
