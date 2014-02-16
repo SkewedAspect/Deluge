@@ -4,7 +4,7 @@
             <span ng-if="article.featured" class="label label-warning">FEATURED</span>
             <span class="label label-primary" ng-repeat="tag in article.tags">{{ tag.toUpperCase() }}</span>
             <div class="byline">
-                by <b>Chris Case</b> <small>{{ article.created | date:'fullDate' }}</small>
+                by <b>{{ article.owner.name }}</b> <small>{{ article.created | date:'fullDate' }}</small>
             </div>
         </div>
         <h2><a href="/articles/{{ article.slug }}">{{ article.title }}</a></h2>

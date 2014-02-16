@@ -29,7 +29,7 @@
                 <input ng-model="article.tagline" type="text" class="form-control" id="articleTagline" placeholder="Some snazzy tagline">
             </div>
             <div class="form-group">
-                <label for="articleTemplate">Template</label>
+                <label for="articleTemplate" ng-init="article.template = '/components/articles/partials/default.html'">Template</label>
                 <select ng-model="article.template" id="articleTemplate" class="form-control" ng-options="article.template as article.base for article in article_templates"></select>
             </div>
             <div class="row">
@@ -47,6 +47,10 @@
                         </button>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="articleOwner">Owner</label>
+                <select ng-model="article.owner" id="articleOwner" class="form-control" ng-options="owner as owner.name for owner in users track by owner.id"></select>
             </div>
             <div class="form-group">
                 <label for="articleContent">Content</label>

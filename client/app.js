@@ -11,6 +11,7 @@ window.app = angular.module("deluge", [
         'slugifier',
         'ui.bootstrap',
         'ui.codemirror',
+        'directive.g+signin',
 
         'ui.ngTags',
         'client.templates',
@@ -43,8 +44,10 @@ window.app = angular.module("deluge", [
         });
 
     }])
-    .run(['$rootScope', '$location', function($rootScope, $location)
+    .run(['$rootScope', '$location', '$http', function($rootScope, $location, $http)
     {
+        $rootScope.user = undefined;
+
         //--------------------------------------------------------------------------------------------------------------
         // Useful functions
         //--------------------------------------------------------------------------------------------------------------
@@ -53,6 +56,25 @@ window.app = angular.module("deluge", [
         {
             $location.path(path);
         }; // end setLocation
+
+        //--------------------------------------------------------------------------------------------------------------
+        // Authentication
+        //--------------------------------------------------------------------------------------------------------------
+
+        $rootScope.$on('event:google-plus-signin-success', function (event, authResult)
+        {
+            $http.post('/auth/google/callback', { code: authResult.code })
+                .success(function(data)
+                {
+                    $rootScope.user = data.user;
+                });
+        });
+
+        $rootScope.$on('event:google-plus-signin-failure', function (event, authResult)
+        {
+            // Auth failure or signout detected
+            console.log('signin failure:', authResult);
+        });
 
         //--------------------------------------------------------------------------------------------------------------
 

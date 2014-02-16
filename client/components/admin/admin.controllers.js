@@ -8,6 +8,38 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
     //------------------------------------------------------------------------------------------------------------------
 
+    if(!$scope.user || !$scope.user.admin)
+    {
+        $location.path('/');
+    } // end if
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    function listUsers(callback)
+    {
+        callback = callback || function(){};
+
+        // Get a list of users
+        $scope.socket.emit('list users', function(error, users)
+        {
+            if(error)
+            {
+                console.error('Error getting user:', error);
+                callback(error)
+            }
+            else
+            {
+                $scope.$apply(function()
+                {
+                    $scope.users = users || [];
+                    callback(error);
+                });
+            } // end if
+        });
+    } // listUsers
+
+    //------------------------------------------------------------------------------------------------------------------
+
     // Get a list of page templates
     $scope.socket.emit('list page templates', function(error, templates)
     {
@@ -82,6 +114,9 @@ module.controller('AdminController', function($scope, $routeParams, $location)
             $scope.page_title = "Add New Article";
             $scope.admin_tpl = '/components/admin/partials/add_article.html';
 
+            // List users
+            listUsers();
+
             $scope.publish = function(article)
             {
                 // Publishing means it's no longer a draft
@@ -103,6 +138,47 @@ module.controller('AdminController', function($scope, $routeParams, $location)
                     {
                         $location.path('/admin');
                     });
+                });
+            }; // end $scope.save
+
+            break;
+
+        //--------------------------------------------------------------------------------------------------------------
+
+        case 'user':
+            $scope.page_title = "Edit User '" + $scope.slug + "'";
+            $scope.admin_tpl = '/components/admin/partials/edit_user.html';
+
+            $scope.socket.emit('get user', $scope.slug, function(error, user)
+            {
+                if(error)
+                {
+                    console.error('Error while getting a user.', error);
+                } // end if
+
+                $scope.$apply(function()
+                {
+                    $scope.userObj = user;
+                });
+            });
+
+            $scope.save = function(editUser, stay)
+            {
+                $scope.socket.emit('update user', editUser, function(error)
+                {
+                    if(error)
+                    {
+                        console.error('Error while updating a user.', error);
+                    } // end if
+
+                    if(!stay)
+                    {
+                        $scope.$apply(function()
+                        {
+                            $scope.user = editUser;
+                            $location.path('/admin');
+                        });
+                    } // end if
                 });
             }; // end $scope.save
 
@@ -148,7 +224,7 @@ module.controller('AdminController', function($scope, $routeParams, $location)
                 {
                     if(error)
                     {
-                        console.error('Error while adding a page.', error);
+                        console.error('Error while updating a page.', error);
                     } // end if
 
                     if(!stay)
@@ -169,6 +245,9 @@ module.controller('AdminController', function($scope, $routeParams, $location)
         case 'article':
             $scope.page_title = "Edit '" + $scope.slug + "' article";
             $scope.admin_tpl = '/components/admin/partials/edit_article.html';
+
+            // List users
+            listUsers();
 
             $scope.socket.emit('get article', $scope.slug, includeDrafts, function(error, article)
             {
@@ -223,6 +302,23 @@ module.controller('AdminController', function($scope, $routeParams, $location)
 
     //------------------------------------------------------------------------------------------------------------------
 
+    $scope.removeUser = function(id)
+    {
+        $scope.socket.emit('remove user', id, function(error)
+        {
+            if(error)
+            {
+                console.error('Error while removing a user.', error);
+            } // end if
+
+            $scope.$apply(function()
+            {
+                _.remove($scope.users, { id: id });
+                $location.path('/admin');
+            });
+        });
+    };
+
     $scope.removePage = function(slug)
     {
         $scope.socket.emit('remove page', slug, function(error)
@@ -257,26 +353,13 @@ module.controller('AdminController', function($scope, $routeParams, $location)
         });
     };
 
-    //FIXME: TESTING!!!
-    $scope.tags = function(tag)
-    {
-        switch(tag)
-        {
-            case 'foo':
-                return 'label-warning';
-
-            case 'baz':
-                return 'label-success';
-
-            default:
-                return 'label-primary'
-        }
-    };
-
     //------------------------------------------------------------------------------------------------------------------
 
     if(!$scope.admin_tpl)
     {
+        // List users
+        listUsers();
+
         // List pages
         $scope.socket.emit('list pages', includeDrafts, function(error, pages)
         {

@@ -28,6 +28,62 @@ app.sockets.on('connection', function(socket)
     console.log('user:', user);
 
     //------------------------------------------------------------------------------------------------------------------
+    // Users
+    //------------------------------------------------------------------------------------------------------------------
+
+    socket.on('list users', function(cb)
+    {
+        models.User.find(function(error, users)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving users: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error, users);
+        });
+    });
+
+    socket.on('get user', function(id, cb)
+    {
+        models.User.findOne({ id: id }, function(error, user)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving user: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error, user);
+        });
+    });
+
+    socket.on('update user', function(user, cb)
+    {
+        models.User.update({ id: user.id }, user, function(error)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving user: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error);
+        });
+    });
+
+    socket.on('remove user', function(id, cb)
+    {
+        models.User.remove({ id: id }, function(error)
+        {
+            if(error)
+            {
+                logger.error('Error retrieving user: %s\n  %s', error.message || error.toString(), error.stack || "");
+            } // end if
+
+            cb(error);
+        });
+    });
+
+    //------------------------------------------------------------------------------------------------------------------
     // Page Templates
     //------------------------------------------------------------------------------------------------------------------
 
@@ -260,11 +316,30 @@ app.sockets.on('connection', function(socket)
                         matched.push(article);
                     } // end if
                 } // end for
-                cb(error, matched);
+
+                async.each(matched, function(article, done)
+                {
+                    article.populate(function()
+                    {
+                        done();
+                    });
+                }, function()
+                {
+                    cb(error, matched);
+                });
             }
             else
             {
-                cb(error, articles);
+                async.each(articles, function(article, done)
+                {
+                    article.populate(function()
+                    {
+                        done();
+                    });
+                }, function()
+                {
+                    cb(error, articles);
+                });
             } // end if
         });
     });
@@ -320,7 +395,10 @@ app.sockets.on('connection', function(socket)
                 logger.error('Error retrieving article: %s\n  %s', error.message || error.toString(), error.stack || "");
             } // end if
 
-            cb(error, article);
+            article.populate(function()
+            {
+                cb(error, article);
+            });
         });
     });
 
