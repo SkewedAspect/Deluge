@@ -33,7 +33,13 @@ First things first: _fork this project_. This way, should you wish to update, yo
 as well as already have a github project available for pushing your changes. You don't _have_ to fork, but I highly
 recommend it.
 
-Next, simple do `npm install`. (If you don't already have it, you will need to `grunt-cli` globally.) Now, just start
-the project with `grunt watch`.
+Prerequisites:
+# NodeJS - www.nodejs.org
+# Grunt build system - http://gruntjs.com/getting-started
+
+Installation:
+1. `npm install` to get NodeJS dependencies
+2. `grunt vendor` to get client-side dependencies
+3. `grunt watch` to start the application.
 
 From here, you're all set to get modifying, or even use it as is!
