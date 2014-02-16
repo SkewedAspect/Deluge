@@ -34,10 +34,11 @@ as well as already have a github project available for pushing your changes. You
 recommend it.
 
 Prerequisites:
-# NodeJS - www.nodejs.org
-# Grunt build system - http://gruntjs.com/getting-started
+- NodeJS - www.nodejs.org
+- Grunt build system - http://gruntjs.com/getting-started
 
 Installation:
+
 1. `npm install` to get NodeJS dependencies
 2. `grunt vendor` to get client-side dependencies
 3. `grunt watch` to start the application.
