@@ -43,4 +43,6 @@ Installation:
 2. `grunt vendor` to get client-side dependencies
 3. `grunt watch` to start the application.
 
+Open http://localhost:8080 to log in, which will create a user for you. Next, you will need to manually edit db/Users.sdb and set `admin` to `true` for your new user.
+
 From here, you're all set to get modifying, or even use it as is!
