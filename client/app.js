@@ -18,6 +18,7 @@ window.app = angular.module("deluge", [
 
         'deluge.filters',
         'deluge.directives',
+        'deluge.services',
         'deluge.controllers'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider)
@@ -45,7 +46,7 @@ window.app = angular.module("deluge", [
         });
 
     }])
-    .run(['$rootScope', '$location', '$http', function($rootScope, $location, $http)
+    .run(['$rootScope', '$location', '$http', '$socket', function($rootScope, $location, $http, $socket)
     {
         $rootScope.user = undefined;
 
@@ -79,7 +80,6 @@ window.app = angular.module("deluge", [
 
         //--------------------------------------------------------------------------------------------------------------
 
-        // Connect to socket.io
-        $rootScope.socket = io.connect();
+        $socket.connect();
     }]);
 //----------------------------------------------------------------------------------------------------------------------
