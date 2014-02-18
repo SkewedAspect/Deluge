@@ -13,6 +13,7 @@ module.exports = function(grunt)
         pkg: grunt.file.readJSON('package.json'),
         settings: config,
 		project: {
+            base: "client",
             dest: "built",
             vendor: "client/vendor",
             static: "client/static",
@@ -26,12 +27,34 @@ module.exports = function(grunt)
                 filters: "client/components/**/*filter*.js"
 			}
 		},
+        built: {
+            base: "built",
+            js: [
+                'js/codemirror/lib/codemirror.js',
+                'js/codemirror/**/*.js',
+                'js/highlightjs/**/*.js',
+                'js/angularjs/angular.min.js',
+                'js/angularjs/*.min.js',
+                'js/app.js',
+                'js/modules.js',
+                'js/client.templates.js',
+                'js/**/*.js'
+            ]
+        },
+        clean: {
+            built: '<%=built.base%>'
+        },
         copy: {
             client: {
                 files: [
-                    { expand: true, flatten: true, src: ['client/app.js'], dest: '<%= project.dest %>/js', filter: 'isFile' },
+                    { expand: true, flatten: true, src: ['client/app.js', 'client/modules.js'], dest: '<%= project.dest %>/js', filter: 'isFile' },
                     { expand: true, flatten: true, src: ['<%=project.static%>/**'], dest: '<%= project.dest %>/static', filter: 'isFile' },
-                    { expand: true, flatten: true, src: ['<%=project.vendor%>/**/*.js', '!<%=project.vendor%>/bootstrap/**/*.js'], dest: '<%= project.dest %>/js', filter: 'isFile' }
+                    { expand: true, cwd: '<%=project.vendor%>/', src: ['**/*.js', '!bootstrap/**/*.js'], dest: '<%= project.dest %>/js', filter: 'isFile' }
+                ]
+            },
+            components: {
+                files: [
+                    { expand: true, cwd: '<%=project.base%>/', src: ['components/**/*.js'], dest: '<%= project.dest %>/js', filter: 'isFile' }
                 ]
             },
             vendor: {
@@ -132,7 +155,7 @@ module.exports = function(grunt)
             },
             angularjs: {
                 basepath: 'http://code.angularjs.org/1.2.7/',
-                src: ['angular.min.js','angular.js', 'angular-route.min.js', 'angular-route.js', 'angular-resource.js', 'angular-resource.min.js', 'angular-mocks.js','angular-cookies.js','angular-cookies.min.js','angular-touch.js','angular-touch.min.js', 'angular-animate.js', 'angular-animate.min.js']
+                src: ['angular.min.js', 'angular-route.min.js', 'angular-resource.min.js', 'angular-cookies.min.js', 'angular-touch.min.js', 'angular-animate.min.js']
             },
             'ui-bootstrap': {
                 basepath: 'https://raw.github.com/angular-ui/bootstrap/gh-pages/',
@@ -181,7 +204,7 @@ module.exports = function(grunt)
             },
             client_js: {
                 files: ['<%= project.components.controllers %>', '<%= project.components.directives %>', '<%= project.components.filters %>'],
-                tasks: ['controllers', 'directives', 'filters'],
+                tasks: ['copy:components'],
                 options: {
                     livereload: true,
                     atBegin: true
@@ -212,25 +235,11 @@ module.exports = function(grunt)
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Custom Tasks
     grunt.loadTasks('tasks');
 
-    // Task for building controllers.js
-    grunt.registerTask('controllers', 'build components.controllers.js file', function () {
-        grunt.file.copy('client/js/components.controllers.tpl.js', 'built/js/components.controllers.js', { process: grunt.template.process });
-    });
-
-    // Task for building directives.js
-    grunt.registerTask('directives', 'build components.directives.js file', function () {
-        grunt.file.copy('client/js/components.directives.tpl.js', 'built/js/components.directives.js', { process: grunt.template.process });
-    });
-
-    // Task for building filters.js
-    grunt.registerTask('filters', 'build components.filters.js file', function () {
-        grunt.file.copy('client/js/components.filters.tpl.js', 'built/js/components.filters.js', { process: grunt.template.process });
-    });
-
     // Setup the build task.
-    grunt.registerTask('build', ['copy', 'controllers', 'filters', 'less', 'html2js']);
+    grunt.registerTask('build', ['clean', 'copy', 'controllers', 'filters', 'less', 'html2js']);
 };

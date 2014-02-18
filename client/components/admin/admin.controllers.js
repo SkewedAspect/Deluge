@@ -1,4 +1,10 @@
-module.controller('AdminController', function($scope, $routeParams, $location)
+//----------------------------------------------------------------------------------------------------------------------
+// The controller for the admin section.
+//
+// @module admin.controllers.js
+//----------------------------------------------------------------------------------------------------------------------
+
+function AdminController ($scope, $routeParams, $location)
 {
     $scope.slug = $routeParams.slug || '/';
     $scope.page = { template: '/components/pages/partials/default.html' };
@@ -378,4 +384,11 @@ module.controller('AdminController', function($scope, $routeParams, $location)
             });
         });
     } // end if
-});
+} // end AdminController
+
+//----------------------------------------------------------------------------------------------------------------------
+
+angular.module('deluge.controllers').controller('AdminController', ['$scope', '$routeParams', '$location', AdminController]);
+
+//----------------------------------------------------------------------------------------------------------------------
+

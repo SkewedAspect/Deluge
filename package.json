@@ -29,6 +29,7 @@
     "adm-zip": "~0.4.3",
     "request": "~2.27.0",
     "mv": "~1.0.0",
-    "passport-google-plus": "~0.2.0"
+    "passport-google-plus": "~0.2.0",
+    "grunt-contrib-clean": "~0.5.0"
   }
 }

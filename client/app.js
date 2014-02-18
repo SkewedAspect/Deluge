@@ -15,9 +15,10 @@ window.app = angular.module("deluge", [
 
         'ui.ngTags',
         'client.templates',
-        'components.filters',
-        'components.directives',
-        'components.controllers'
+
+        'deluge.filters',
+        'deluge.directives',
+        'deluge.controllers'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider)
     {
