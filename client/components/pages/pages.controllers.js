@@ -11,7 +11,7 @@ function buildTemplateURL(templateName)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-module.controller('PagesController', function($scope, $routeParams, $location)
+function PagesController($scope, $routeParams, $location)
 {
     var not_found = {
         title: "Page not found",
@@ -70,6 +70,11 @@ module.controller('PagesController', function($scope, $routeParams, $location)
             });
         } // end if
     });
-});
+} // end PagesController
 
 // ---------------------------------------------------------------------------------------------------------------------
+
+angular.module('deluge.controllers').controller('PagesController', ['$scope', '$routeParams', '$location', PagesController]);
+
+// ---------------------------------------------------------------------------------------------------------------------
+
