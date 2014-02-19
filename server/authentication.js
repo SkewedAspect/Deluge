@@ -101,7 +101,7 @@ app.init(function()
                                 tokens: tokens
                             });
 
-                            // make the first user an admin
+                            // Make the first user an admin
                             if(users.length == 0)
                             {
                                 user.admin = true;
