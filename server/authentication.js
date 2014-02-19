@@ -88,20 +88,30 @@ app.init(function()
                     }
                     else
                     {
-                        // Create new user
-                        user = new models.User({
-                            id: profile.id,
-                            name: profile.displayName,
-                            email: profile.email,
-                            nick: profile.nickname,
-                            avatar: imageURL,
-                            tokens: tokens
-                        });
-
-                        user.save(function()
+                        // Check if this is the first user
+                        models.User.find({}, function(err, users)
                         {
-                            done(null, user);
-                        });
+                            // Create new user
+                            user = new models.User({
+                                id: profile.id,
+                                name: profile.displayName,
+                                email: profile.email,
+                                nick: profile.nickname,
+                                avatar: imageURL,
+                                tokens: tokens
+                            });
+
+                            // make the first user an admin
+                            if(users.length == 0)
+                            {
+                                user.admin = true;
+                            }
+
+                            user.save(function()
+                            {
+                                done(null, user);
+                            });
+                        });// end find
                     } // end if
                 } // end if
             });
