@@ -11,7 +11,7 @@ function buildArticleTemplateURL(templateName)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-module.controller('ArticlesController', function($scope, $routeParams, $location)
+function ArticlesController($scope, $routeParams)
 {
     var not_found = {
         title: "Article not found",
@@ -44,6 +44,10 @@ module.controller('ArticlesController', function($scope, $routeParams, $location
             } // end if
         });
     });
-});
+} // end ArticlesController
+
+//----------------------------------------------------------------------------------------------------------------------
+
+angular.module('deluge.controllers').controller('ArticlesController', ['$scope', '$routeParams', ArticlesController]);
 
 // ---------------------------------------------------------------------------------------------------------------------

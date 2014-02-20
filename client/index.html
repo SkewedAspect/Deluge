@@ -1,3 +1,11 @@
+<%
+var getFileList = function(fileGlobOption) {
+    var distDir = grunt.config.get('built.base');
+    var fileGlob = grunt.config.get(fileGlobOption);
+    return grunt.file.expand({ cwd: distDir }, fileGlob);
+};
+%>
+
 <!DOCTYPE html>
 <html lang="en" data-ng-app="deluge">
     <head>
@@ -21,47 +29,11 @@
         <!-- Theme Styling -->
         <link href="/client/css/theme.css" rel="stylesheet">
 
-        <!-- Google Plus -->
-        <!--script src="//apis.google.com/js/client:plusone.js"></script-->
-
-        <!-- Code Mirror -->
-        <script src="/client/js/codemirror.js"></script>
-        <script src="/client/js/overlay.js"></script>
-        <script src="/client/js/markdown.js"></script>
-        <script src="/client/js/gfm.js"></script>
-        <script src="/client/js/css.js"></script>
-        <script src="/client/js/diff.js"></script>
-        <script src="/client/js/erlang.js"></script>
-        <script src="/client/js/go.js"></script>
-        <script src="/client/js/htmlembedded.js"></script>
-        <script src="/client/js/javascript.js"></script>
-        <script src="/client/js/less.js"></script>
-        <script src="/client/js/python.js"></script>
-        <script src="/client/js/shell.js"></script>
-        <script src="/client/js/yaml.js"></script>
-
-        <!-- highlight.js -->
-        <script src="/client/js/highlight.min.js"></script>
-
-        <!-- Vendor Scripts -->
+        <!-- Scripts -->
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/client/js/marked.js"></script>
-        <script src="/client/js/lodash.min.js"></script>
-        <script src="/client/js/angular.min.js"></script>
-        <script src="/client/js/angular-route.min.js"></script>
-        <script src="/client/js/angular-resource.min.js"></script>
-        <script src="/client/js/ui-bootstrap-tpls-0.9.0.min.js"></script>
-        <script src="/client/js/ui-codemirror.min.js"></script>
-        <script src="/client/js/angular-slugify.js"></script>
-        <script src="/client/js/google-plus-signin.js"></script>
 
-        <!-- Application Scripts -->
-        <script src="/client/js/app.js"></script>
-        <script src="/client/js/client.templates.js"></script>
-        <script src="/client/js/components.filters.js"></script>
-        <script src="/client/js/components.directives.js"></script>
-        <script src="/client/js/components.controllers.js"></script>
-
+        <% _.forEach(getFileList('built.js'), function(src) { %><script src="/client/<%= src %>"></script>
+        <% }); %>
         <% if(grunt.config('settings.debug')) { %>
         <!-- Live Reload Script -->
         <script src="//localhost:35729/livereload.js"></script>

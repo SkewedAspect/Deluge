@@ -15,7 +15,7 @@ function sortByDate(array)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-module.directive('recentArticles', function()
+function recentArticlesDirective()
 {
     return {
         restrict: 'E',
@@ -64,10 +64,11 @@ module.directive('recentArticles', function()
             });
         }
     }
-});
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
-module.directive('listArticles', function()
+function listArticlesDirective()
 {
     return {
         restrict: 'E',
@@ -126,6 +127,11 @@ module.directive('listArticles', function()
             });
         }
     }
-});
+} // end listArticlesDirective
+
+//----------------------------------------------------------------------------------------------------------------------
+
+angular.module('deluge.directives').directive('recentArticles', recentArticlesDirective);
+angular.module('deluge.directives').directive('listArticles', listArticlesDirective);
 
 // ---------------------------------------------------------------------------------------------------------------------
