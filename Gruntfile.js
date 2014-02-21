@@ -181,9 +181,10 @@ module.exports = function(grunt)
         watch: {
             index: {
                 files: ['client/index.html'],
-                tasks: ['copy:index'],
+                tasks: ['html2js', 'copy', 'copy:index'],
                 options: {
-                    livereload: true
+                    livereload: true,
+                    atBegin: true
                 }
             },
             server: {
@@ -241,5 +242,5 @@ module.exports = function(grunt)
     grunt.loadTasks('tasks');
 
     // Setup the build task.
-    grunt.registerTask('build', ['clean', 'copy', 'controllers', 'filters', 'less', 'html2js']);
+    grunt.registerTask('build', ['clean', 'html2js', 'copy', 'less']);
 };
