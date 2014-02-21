@@ -27,7 +27,7 @@ function recentArticlesDirective()
             tags: '&'
         },
         templateUrl: '/components/articles/partials/recent.html',
-        controller: function($scope)
+        controller: function($scope, $socket)
         {
             var filter = { featured: (!!$scope.featuredOnly() || !!$scope.featured()), draft: !!$scope.drafts() };
             if($scope.featured())
@@ -45,7 +45,7 @@ function recentArticlesDirective()
                 tags = $scope.tags();
             } // end if
 
-            $scope.$root.socket.emit('find articles', filter, tags, function(error, articles)
+            $socket.emit('find articles', filter, tags, function(error, articles)
             {
                 if(error)
                 {
@@ -53,13 +53,10 @@ function recentArticlesDirective()
                 }
                 else
                 {
-                    $scope.$apply(function()
-                    {
-                        var limit = ($scope.limit() || articles.length);
+                    var limit = ($scope.limit() || articles.length);
 
-                        articles = sortByDate(articles);
-                        $scope.articles = articles.splice(0, limit);
-                    });
+                    articles = sortByDate(articles);
+                    $scope.articles = articles.splice(0, limit);
                 } // end if
             });
         }
@@ -79,7 +76,7 @@ function listArticlesDirective()
             tags: '&'
         },
         templateUrl: '/components/articles/partials/list.html',
-        controller: function($scope)
+        controller: function($scope, $socket)
         {
             var filter = { featured: !!$scope.featured(), draft: !!$scope.drafts() };
             if($scope.featured() == undefined || $scope.featured())
@@ -111,7 +108,7 @@ function listArticlesDirective()
                 tags = $scope.tags();
             } // end if
 
-            $scope.$root.socket.emit('find articles', filter, tags, function(error, articles)
+            $socket.emit('find articles', filter, tags, function(error, articles)
             {
                 if(error)
                 {
@@ -119,10 +116,7 @@ function listArticlesDirective()
                 }
                 else
                 {
-                    $scope.$apply(function()
-                    {
-                        $scope.articles = articles;
-                    });
+                    $scope.articles = articles;
                 } // end if
             });
         }

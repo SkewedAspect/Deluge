@@ -11,7 +11,7 @@ function buildArticleTemplateURL(templateName)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-function ArticlesController($scope, $routeParams)
+function ArticlesController($scope, $routeParams, $socket)
 {
     var not_found = {
         title: "Article not found",
@@ -26,28 +26,25 @@ function ArticlesController($scope, $routeParams)
     var slug = $routeParams.slug;
 
     // Attempt to get the article for the current slug.
-    $scope.socket.emit('get article', slug, function(error, article)
+    $socket.emit('get article', slug, function(error, article)
     {
-        $scope.$apply(function()
+        if(error)
         {
-            if(error)
-            {
-                console.log('Error getting article.', error);
-                $scope.article = error_article;
-                $scope.article.slug = slug;
-                $scope.article.error = error;
-            }
-            else
-            {
-                $scope.article = article || not_found;
-                $scope.article.slug = slug;
-            } // end if
-        });
+            console.log('Error getting article.', error);
+            $scope.article = error_article;
+            $scope.article.slug = slug;
+            $scope.article.error = error;
+        }
+        else
+        {
+            $scope.article = article || not_found;
+            $scope.article.slug = slug;
+        } // end if
     });
 } // end ArticlesController
 
 //----------------------------------------------------------------------------------------------------------------------
 
-angular.module('deluge.controllers').controller('ArticlesController', ['$scope', '$routeParams', ArticlesController]);
+angular.module('deluge.controllers').controller('ArticlesController', ['$scope', '$routeParams', '$socket', ArticlesController]);
 
 // ---------------------------------------------------------------------------------------------------------------------
